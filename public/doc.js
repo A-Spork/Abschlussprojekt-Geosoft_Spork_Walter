@@ -4,24 +4,26 @@
 */
 
 "use strict";
-checkCookie("username");
 var username;
 var tours;
-var position;
-main();
+
+
+
+
+
 
 async function main(){
-	username = getCookie("username");
-	tours = await tourDbSearchUsername(username);
-	await getLocation();
-	//
-	// await showMap();
-	// showTable()
-}
+  username = document.getElementById("username").value;
+  if(username!=""){
+  	tours = await tourDbSearchUsername(username);
 
-async function main2(){
+    tours= timefilter(tours);
+
 		await showMap();
 		showTable();
+  }else{
+    alert("Not a valid username");
+  }
 }
 
 
@@ -39,7 +41,7 @@ function showMap()
 	}
 
 
-	var map = L.map('mapSection').setView (position.geometry.coordinates, 15);
+	var map = L.map('mapSection').setView (tours[0].place[0].coordinates, 15);
 	L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 	{
 		maxZoom: 18,
@@ -78,11 +80,7 @@ function showMap()
 		}
 	}
 
-	// current position
-	var temp = toGeoJSONPoint (JSON.parse ("[" + position.geometry.coordinates[1 ]+ "," + position.geometry.coordinates[0]+ "]"));
-	var PositionMarker = L.geoJSON (temp).addTo(map);
-	PositionMarker.bindPopup ("You are here!");
-//
+
 		var Layers =
 		{
 			 "Nothing" : Empty,
@@ -120,41 +118,64 @@ function showTable(){
 				"\t\t</tr>";
 			}
 		}
-document.getElementById("lastToursBody").innerHTML = out;
+document.getElementById("lastToursBodyDoc").innerHTML = out;
 }
 
+function timefilter(){
+  var start = document.getElementById("startDate").value;
+  var end = document.getElementById("endDate").value;
+
+}
 
 /**
-* @function getLocation - Uses the geolocator to get the current position of the user for showPosition()
+* @function getTime - Gets the time in unixseconds and gives it out as a readable time used for the departures of the busses
+* @param unix - The overgiven time
+* @var unix_timestamp - The overgiven time in unix - seconds
+* @var date - Creates a new JavaScript Date object based on the timestamp multiplied by 1000 so that the argument is in milliseconds, not seconds
+* @var hours - Hours part from the timestamp
+* @var minutes - Minutes part from the timestamp
+* @var seconds - Seconds part from the timestamp
+* @var year - Years part from the timestamp
+* @var month - Months part from the timestamp
+* @var day - Days part from the timestamp
+* @var formattedTime - Displays the time in "05.10.2020, 10:30:23" - format
+* @return formattedTime - Returns the formatted time for the departure
+* @source: https://stackoverflow.com/questions/847185/convert-a-unix-timestamp-to-time-in-javascript
 */
 
-function getLocation()
+function getTime(unix)
 {
-	if (navigator.geolocation)
-	{
-	 navigator.geolocation.getCurrentPosition (showPosition);
-	 return;
-	}
-	else
-	{
-		alert("Geolocation is not supported by this browser");
-		return;
-	}
-}
+	var unix_timestamp = unix;
+	var date = new Date (unix_timestamp);
 
+	var hours = date.getHours();
+	var minutes = "0" + date.getMinutes();
+	var seconds = "0" + date.getSeconds();
+	var year = date.getFullYear();
+	var month = date.getMonth();
+	var day = date.getDate();
+
+	var formattedTime = day + '.' + (month+1) + '.' + year + ', ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+  var time = {
+    year:   year,
+    month:  (month+1),
+    day:    day,
+    hour:   hours,
+    minute: minutes,
+    seconds:seconds,
+    formattedTime: formattedTime
+  };
+	return time;
+}
 
 /**
-* @function showPosition - Saves the given position as point_modified and shows it on the webpage
+* Calculates a timestring in ECMAScript 5 ISO-8601 Format + timezone into unixseconds
+* @param timestring time in ECMAScript 5 ISO-8601 Format + timezone (e.g.: 2020-08-26T17:02:00+02:00)
+* @return time in unixseconds
 */
 
-function showPosition (position1)
-{
-	 position = toGeoJSONPoint([position1.coords.latitude, position1.coords.longitude]);
-
-}
-
-
-
-function ChangeToAdd(){
-window.location = "http://localhost:3000/public/addTour.html";
+function getUnix(timestring){
+var timezone = timestring.substr(19,3);
+var unix = Date.parse(timestring.substr(0,19))-(timezone*60*60*1000);
+return unix;
 }
