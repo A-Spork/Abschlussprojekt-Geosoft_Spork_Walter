@@ -5,25 +5,36 @@
 
 "use strict";
 var username;
-var tours;
-
-
-
-
+var tours = [];
 
 
 async function main(){
   username = document.getElementById("username").value;
   if(username!=""){
+    if((await customerDbSearchUsernamePassword(username,"")).length==0){
+      alert("User unknown!");
+      return;
+    }
   	tours = await tourDbSearchUsername(username);
-
-    tours= timefilter(tours);
-
+    if(tours.length==0)
+    {
+      alert("No tours for this user available");
+      return;
+    }
+    tours = timefilter();
+    if(tours==-1)return;
+    if(tours==[])
+    {
+      alert("No tours for this period available");
+      return;
+    }
 		await showMap();
 		showTable();
+
   }else{
     alert("Not a valid username");
   }
+
 }
 
 
@@ -107,23 +118,76 @@ function showTable(){
 				"\t\t\t<td id = \"destination" + i + "\">" + tours[i].destination + "</td>\n" +
 				"\t\t\t<td id = \"line" + i + "\">" + tours[i].line + "</td>\n" +
 				"\t\t\t<td id = \"risk" + i + "\">" + tours[i].risk + "</td>\n" +
+        "\t\t\t<td id = \"tourId" + i + "\">" + tours[i].tourId + "</td>\n" +
 				"\t\t</tr>";
 			}else{
-				out += "<tr>\n" +
+				out += "<tr id = "+"green"+">\n" +
 				"\t\t\t<td id = \"date" + i + "\">" + tours[i].date + "</td>\n" +
 				"\t\t\t<td id = \"departure" + i + "\">" + tours[i].place[0].name + "</td>\n" +
 				"\t\t\t<td id = \"destination" + i + "\">" + tours[i].destination + "</td>\n" +
 				"\t\t\t<td id = \"line" + i + "\">" + tours[i].line + "</td>\n" +
 				"\t\t\t<td id = \"risk" + i + "\">" + tours[i].risk + "</td>\n" +
+        "\t\t\t<td id = \"tourId" + i + "\">" + tours[i].tourId + "</td>\n" +
 				"\t\t</tr>";
 			}
 		}
 document.getElementById("lastToursBodyDoc").innerHTML = out;
 }
 
+
+
 function timefilter(){
-  var start = document.getElementById("startDate").value;
-  var end = document.getElementById("endDate").value;
+
+    var start = document.getElementById("startDate").value;
+    var end = document.getElementById("endDate").value;
+
+    if(start==""){
+      start=Number.NEGATIVE_INFINITY;
+    }else{
+      if(isNaN(start)==true){
+        start = getUnix(start);
+      }
+      else {
+        start = JSON.parse(start);
+      }
+    }
+
+
+    if(end==""){
+      end=Number.POSITIVE_INFINITY;
+    }else{
+      if(isNaN(end)==true){
+        end = getUnix(end);
+      }
+      else {
+        end = JSON.parse(end);
+      }
+    }
+
+
+    var a = false;
+    if(isNaN(start)){
+      alert("Start not a valid date");
+      a=true;
+    }
+    if(isNaN(end)){
+      alert("End not a valid date");
+      a=true;
+    }
+    if(a==true){
+      return -1;
+    }else if(start>end)
+    {
+      alert("Start needs to be earlier than end");
+      return -1;
+    }
+var filteredTours=[];
+for(var i=0;i<tours.length;i++){
+  if((getUnix(tours[i].date) >= start) && (getUnix(tours[i].date) <= end)){
+    filteredTours[filteredTours.length]=tours[i];
+  }
+}
+return filteredTours
 
 }
 
@@ -178,4 +242,60 @@ function getUnix(timestring){
 var timezone = timestring.substr(19,3);
 var unix = Date.parse(timestring.substr(0,19))-(timezone*60*60*1000);
 return unix;
+}
+
+
+function markSingle(){
+var id = document.getElementById("tour").value;
+for(var i=0;i<tours.length;i++){
+  if(id==tours[i].tourId){
+    mark(i);
+    // location.reload();
+    return;
+  }
+}
+alert("TourId not valid");
+}
+
+
+function markAll(){
+  for(var i=0;i<tours.length;i++){
+    mark(i);
+  }
+  // location.reload();
+}
+
+
+function mark(i){
+  if(tours[i].risk=="true"){
+    return;
+  }
+  tourDbUpdate(i);
+//////überschneidungen////////////////
+}
+
+async function tourDbUpdate(i)
+{
+  deleteTour(tours[i].tourId);
+  var input = {
+    "tourId": tours[i].tourId,
+    "category":tours[i].category,
+    "line": tours[i].line,
+    "destination": tours[i].destination,
+    "date": tours[i].date,
+    "risk": JSON.parse(true), ///////////////////////////////////////////////
+    "riskDate" : Date.now(),
+    "username": tours[i].username,
+    "place":tours[i].place
+  };
+
+
+    try{
+      await tourPostRequest(input);
+      return true;
+    }
+    catch(e){
+      console.log("PostRequest broke");
+      return false;
+    }
 }

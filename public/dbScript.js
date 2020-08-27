@@ -172,21 +172,21 @@ function tourGetRequestTourId(query)
 
 
 /**
-* @function delteTour - Deletes one point from the DB
+* @function delteTour - Deletes a tour from the DB by its tourId
+* @param tourId The tourId of the tour to be deleted
 */
 
-
-async function deleteTour(query)
-    {
-    	var object = {tourId : encodeURIComponent(query)};
-    		return await new Promise(function (res, rej){
-    						$.ajax
-    				        ({
-    								url: "/tour",
-    								method: "DELETE",
-    								data: object,
-                    success: function (result) { console.log(result); },
-    								error: function (err) {console.log(err);}
+async function deleteTour(tourId)
+  {
+    var object = {tourId : encodeURIComponent(tourId)};
+    	return await new Promise(function (res, rej){
+    					$.ajax
+    				     ({
+    						url: "/tour",
+    						method: "DELETE",
+    						data: object,
+                success: function (result) { console.log(result);  res(result); },/////// res(result); neu
+    						error: function (err) {console.log(err);}
     						});
     				});
-        }
+    }

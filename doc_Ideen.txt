@@ -13,3 +13,7 @@ Fahrten markieren
 -> Überschneidugen mit Touren anderer Nutzer -> markieren
 		Warnung an Nutzer raus schicken
 Touren brauchen Markierzeitstempel
+
+
+
+Fahrten besser eingrenzen können
