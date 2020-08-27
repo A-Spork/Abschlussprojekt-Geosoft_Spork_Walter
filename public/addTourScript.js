@@ -12,7 +12,6 @@ var position;
 var stationDepartures;
 var radius=50000;
 
-//var key= //////////////////////////////////////////////////////////////////////////////////////;
 
 
 async function mainAddTour(){
@@ -134,7 +133,7 @@ function showGo(){
 function showGeocoding(){
   //neues einlenden
   document.getElementById("adress").style="";
-  document.getElementById("geocodingkey").style="";
+  document.getElementById("geocodingkeyinput").style="";
   document.getElementById("GeocodingButton").style="";
   document.getElementById("keystring").style="";
   document.getElementById("adressString").style="";
@@ -151,8 +150,10 @@ function startGeocoding(){
 
 function geocoding()
 {
-
-  // var geocodingkey = document.getElementById("geocodingkey").value;
+  // console.log(geokey);
+  var geocodingkey = geokey;
+// console.log(geocodingkey);
+  // var geocodingkey = document.getElementById("geocodingkeyinput").value;
   var adressString = document.getElementById("adress").value;
 	var resource = "https://eu1.locationiq.com/v1/search.php?key=" + geocodingkey + "&q=" + adressString + "&format=" + "json";
 	var z = new XMLHttpRequest();
@@ -193,6 +194,7 @@ function coordinates(){
 
 function getBusstops(location)
 {
+  // console.log(key);
 	var resource = "https://transit.hereapi.com/v8/departures?in=" + location + ";r="+radius+"&apiKey="+key;
 	var x = new XMLHttpRequest();
 	x.open("GET", resource, false);
@@ -257,7 +259,8 @@ else{
 async function checkcheckboxes(){
   // var a=0; //Anzahl gespeicherter Touren
   // var b=0; //
-  var risk=Boolean(true);
+// var risk=Boolean(true);
+  var risk=Boolean(false);
 for(var i=0;i<5;i++){
     if(document.getElementById("myCheck"+i).checked==true){
       // b++;
@@ -334,6 +337,7 @@ async function addTour(station,id,risk) //Position von Station und der entsprech
       "destination": stationDepartures.boards[station].departures[id].transport.headsign,
       "date": stationDepartures.boards[station].departures[id].time,
       "risk": JSON.parse(risk),
+      "riskDate" : null,
       "username": username,
       "place":[ {
         "id":stationDepartures.boards[station].place.id,
@@ -343,8 +347,8 @@ async function addTour(station,id,risk) //Position von Station und der entsprech
           "lng":stationDepartures.boards[station].place.location.lng
         },
         "type":stationDepartures.boards[station].place.type
-      }]
-    };
+      }]};
+
 var temp = await checkTour(input.tourId);
     if(temp==false){
       try{
@@ -355,10 +359,11 @@ var temp = await checkTour(input.tourId);
         console.log("PostRequest broke");
         return false;
       }
-    }else if((await checkTour(input.tourId))==true){
-       // alert("Tour already been saved!");
+    }else{
+      if((await checkTour(input.tourId))==true){
       return false;
     }
+  }
 
 }
 
@@ -370,7 +375,7 @@ var temp = await checkTour(input.tourId);
 *
 **/
 async function checkTour(id){
-  var temp = await tourDbSearchTourId(encodeURIComponent(id));
+  var temp = await tourDbSearchTourId((id));
   if(temp.length==0){
         return false;
       }else if(temp.length!=0){

@@ -13,8 +13,13 @@ Matr. - Nr.: 459 762, 460 137 -->
 <body style = "background-color: cyan;">
   <h1> View your tours</h1>
 
+<input id="username" style=""> Insert the patient´s username </input>
+<p></p>
+<input id="startDate" style=""> Insert the beginning date </input>
+<p></p>
+<input id="endDate" style=""> Insert the ending date</input>
 
-<button onclick="main2();">Show the map</button>
+<button onclick="main()">Search the db for the patient´s tours</button>
 
   <!-- The map and the leaflet scripts for the map -->
 
@@ -48,22 +53,14 @@ th, td {
       <th> Contact to infected person </th>
   	</tr>
   </thead>
-  <tbody id = "lastToursBody"> </tbody>
+  <tbody id = "lastToursBodyDoc"> </tbody>
 </table>
 
 
-
-  <p>
-    <button onclick=ChangeToAdd();>Add a Tour</button>
-    <button onclick=logOut();>LogOut</button>
-  </p>
   <script src = "dbScript.js"></script>
-  <script src = "cookie.js"></script>
-  <script src = "logInScript.js"></script>
   <script src = "geoJSON.js"></script>
-  <script src = "lastToursScript.js"></script>
   <script src = "/jquery/jquery.min.js"></script>
-
+  <script src = "doc.js"></script>
 
 </body>
 </html>

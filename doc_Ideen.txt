@@ -1,0 +1,15 @@
+Gibt Nutzernamen ein
+bekommt alle Fahrten des Nutzers gezeigt
+Karte und Tabelle
+
+
+Datum umwandeln
+Fahrten nach Datum filtern mit geUnix und getTime
+
+Fahrten markieren
+-> Fahrten des Nutzers markieren (update)
+	->Risiko
+	->Markierdatum
+-> Überschneidugen mit Touren anderer Nutzer -> markieren
+		Warnung an Nutzer raus schicken
+Touren brauchen Markierzeitstempel

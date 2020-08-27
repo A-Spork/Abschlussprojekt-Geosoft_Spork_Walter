@@ -1,0 +1,18 @@
+{
+  "name": "abschlussprojekt",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Jana Walter, Adrian Spork",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "jquery": "^3.5.1",
+    "leaflet": "^1.6.0",
+    "mongodb": "^3.5.8",
+    "qunit": "^2.11.1"
+  }
+}

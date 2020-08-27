@@ -18,11 +18,12 @@ async function connectMongoDB ()
         app.locals.db.createCollection("tour", function(err, res) {
           console.log("Collection tour created!");
         });
-        // app.locals.db.createCollection("doc", function(err, res) {
-        //   console.log("Collection doc created!");
-        // });
+
 
         console.log("Using db: " + app.locals.db.databaseName);
+        //clear collections
+        // app.locals.db.collection("tour").drop( (err,delOK) => {if(delOK) console.log("collection tour cleared");});
+        // app.locals.db.collection("customer").drop( (err,delOK) => {if(delOK) console.log("collection customer cleared");});
     }
     catch (error)
 	{
@@ -37,6 +38,8 @@ app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist'));
 app.get('/', (req, res) => {res.sendFile(__dirname + '/logIn.html');});
 app.get('/', (req, res) => {res.sendFile(__dirname + '/public/addTour.html');});
 app.get('/', (req, res) => {res.sendFile(__dirname + '/public/lastTours.html');});
+app.get('/', (req, res) => {res.sendFile(__dirname + '/public/doc.html');});
+
 
 
 
@@ -54,7 +57,6 @@ app.get("/customer", (req,res) =>
       {
         console.dir(error);
       }
-      console.log(result);
       res.json(result);
     });
     }
@@ -112,20 +114,16 @@ app.delete("/customer", (req, res) =>
 app.get("/tour", (req,res) =>
 {
   var object={};
-    if(decodeURIComponent(req.query.tourId==undefined))
+    if(decodeURIComponent(req.query.tourId)=="undefined")
     {
       if(decodeURIComponent(req.query.username)=="admin"){
       }else{
         object = {"username" : decodeURIComponent(req.query.username)};//username
-        console.log(decodeURIComponent(req.query.username));
       }
     }else{
-        object = {"tourId" : decodeURIComponent(req.query.tourId)};//tourId
-        console.log(decodeURIComponent(req.query.tourId));
+        object = {"tourId" : (req.query.tourId)};//tourId
     }
-
 	app.locals.db.collection('tour').find(object).toArray((error, result) => //find all with the id
-	// app.locals.db.collection('tour').find().toArray((error, result) =>//find all
   {
 		if (error)
 		{
@@ -155,33 +153,17 @@ app.post("/tour", (req, res) =>
 
 
 app.delete("/tour", (req, res) =>{
-  var object={};
-  var temp;
-  var id=decodeURIComponent(req.body.tourId);
-  console.log(id);
-  console.log(JSON.stringify(id));
-  console.log(id==undefined);
-  // if(decodeURIComponent(req.body.tourId)==undefined){
-    if(id==undefined){////Fehler
-      console.log("_id");
-    object = {_id : (new mongodb.ObjectID(req.body._id))};
-    temp = (req.body._id);
-  }else{
-    console.log("tourId");
-    object = {tourId : decodeURIComponent(req.body.tourId)};
-    temp = decodeURIComponent(req.body.tourId);
-  }
-    console.log(JSON.stringify(object));
-    app.locals.db.collection('tour').deleteOne(object, (error, result) =>
-	{
-		if(error)
-		{
+
+  var object = {tourId : decodeURIComponent(req.body.tourId)};
+
+    app.locals.db.collection('tour').deleteOne(object, (error, result) => {
+		if(error){
 			console.dir(error);
 		}else{
-    console.log("deleted tour" + JSON.stringify(temp));
+    console.log("deleted tour" + JSON.stringify(decodeURIComponent(req.body.tourId)));
     res.json(result)
-  }
-    });
+    }
+  });
 });
 
 app.listen(port,() => console.log(`Example app listening at http://localhost:${port}`))

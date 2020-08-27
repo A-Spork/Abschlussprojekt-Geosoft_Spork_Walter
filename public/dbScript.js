@@ -68,7 +68,6 @@ async function customerDbSearchUsernamePassword(username,password)
   // query = ?name=geo/////////////////////////////////////////////////////////////
   // var query = "?tourId="+ tourId; //////////////////////////oder so ähnlich
   var temp = await customerGetRequestUsername(query);
-  console.log(temp);
   return temp;
 }
 
@@ -81,7 +80,6 @@ async function deleteCustomerUsername(username)
     								url: "/customer",
     								method: "DELETE",
     								data: temp,
-                    // success: function (result) { console.log(result); },
     								success: function (result) { res(result); },
     								error: function (err) {console.log(err);}
     						});
@@ -160,8 +158,7 @@ function tourGetRequestUsername(query)
  */
 function tourGetRequestTourId(query)
 {
-
-  var encodedId= encodeURIComponent(query.tourId);
+  var encodedId = encodeURIComponent(query.tourId);
     return new Promise(function (res, rej){
         $.ajax({
             url: "/tour" + "?tourId=" + encodedId,
@@ -181,8 +178,7 @@ function tourGetRequestTourId(query)
 
 async function deleteTour(query)
     {
-    	// var object = {tourId : encodeURIComponent(query)}; //select by dbSearchTourId
-      var object = {_id : query};//select by _id
+    	var object = {tourId : encodeURIComponent(query)};
     		return await new Promise(function (res, rej){
     						$.ajax
     				        ({
