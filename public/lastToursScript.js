@@ -34,7 +34,7 @@ async function main2(){
 function showMap()
 {
 	if(tours.length==0) {
-		console.log("No Tour to display");
+		alert("No Tour to display");
 		return;
 	}
 

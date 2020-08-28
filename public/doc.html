@@ -8,20 +8,29 @@ Matr. - Nr.: 459 762, 460 137 -->
 <meta charset = "utf-8">
 <meta name = "viewport" content = "width = device-width, initial-scale = 1">
 <link rel = "stylesheet" href = "https://unpkg.com/leaflet/dist/leaflet.css"/>
-<title> View your tours </title>
+<title> Doc </title>
 </head>
 <body style = "background-color: cyan;">
-  <h1> View your tours</h1>
+  <h1> Doc</h1>
 
 <input id="username" style=""> Insert the patient´s username </input>
 <p></p>
 <input id="startDate" style=""> Insert the beginning date </input>
 <p></p>
 <input id="endDate" style=""> Insert the ending date</input>
-
+<p>
+  Accepted Formats:<br>
+   - empty => no restriction <br>
+   - unix timecode<br>
+   - ECMAScript 5 ISO-8601 Format + timezone
+</p>
+<p>example for ECMAScript 5 ISO-8601 Format + timezone: </p>
+<p>2020-08-26T14:32:00+02:00</p>
+<p>YYYY-MM-DDTHH:MM:SS+tt:00</p>
 <button onclick="main()">Search the db for the patient´s tours</button>
 
-  <!-- The map and the leaflet scripts for the map -->
+
+  <!--//////////////////// The map and the leaflet scripts for the map ////////////////-->
 
 <div id = "main" style = "overflow: auto;"></div>
 <div class = "center-block" id = "mapSection" style = "width: 600px; height: 400px; float: align;"></div>
@@ -29,6 +38,18 @@ Matr. - Nr.: 459 762, 460 137 -->
 <link rel = "stylesheet" href = "http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css"/>
 <script src = "http://cdn.leafletjs.com/leaflet/v1.5.1/leaflet.js"></script>
 
+
+<!-- /////////////////////mark tours///////////////////////// -->
+
+<input id="tour" style=""> Insert the tourId here </input>
+<p></p>
+<button onclick="markSingle()">Mark a single tour with TourId</button>
+<button onclick="clearSingle()">Clear a single tour with TourId</button>
+<p></p>
+<button onclick="markAll()">Mark all displayed tours</button>
+<button onclick="clearAll()">Clear all displayed tours</button>
+<p></p>
+<!-- /////////////////////////////////////////table/////////////////////////// -->
 <style>
 table, th, td {
   border: 1px solid black;
@@ -41,6 +62,9 @@ th, td {
 #red {
   background-color: red;
 }
+#green {
+  background-color: green;
+}
 </style>
 
 <table id = "lastTours" border = "1" style = "width: 60%">
@@ -51,13 +75,15 @@ th, td {
   		<th> Destination </th>
       <th> Line </th>
       <th> Contact to infected person </th>
+      <th> TourId </th>
   	</tr>
   </thead>
   <tbody id = "lastToursBodyDoc"> </tbody>
 </table>
 
-
+  <script src = "cookie.js"></script>
   <script src = "dbScript.js"></script>
+  <script src = "logInScript.js"></script>
   <script src = "geoJSON.js"></script>
   <script src = "/jquery/jquery.min.js"></script>
   <script src = "doc.js"></script>

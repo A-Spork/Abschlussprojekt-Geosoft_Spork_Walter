@@ -170,23 +170,45 @@ function tourGetRequestTourId(query)
 }
 
 
+/**
+ * @desc Request data stored in MongoDB and resolves them as promise
+ * @param query to filter stored data
+ */
+function tourGetRequestMatch(line, destination, place, date, category)
+{
+  var encodedLine = encodeURIComponent(line);
+  var encodedDestination = encodeURIComponent(destination);
+  var encodedPlace = encodeURIComponent(place);
+  var encodedDate = encodeURIComponent(date);
+  var encodedCategory = encodeURIComponent(category);
+
+    return new Promise(function (res, rej){
+        $.ajax({
+            url: "/tour" + "?category=" + encodedCategory+"&"+ "destination"+"="+encodedDestination+"&"+ "place"+"="+encodedPlace+"&"+ "date"+"="+encodedDate+"&"+ "line"+"="+encodedLine,
+            type: "get",
+            success: function (result){ res(result);},
+            error: function (err){ console.log(err);}
+        });
+    });
+}
+
 
 /**
-* @function delteTour - Deletes one point from the DB
+* @function delteTour - Deletes a tour from the DB by its tourId
+* @param tourId The tourId of the tour to be deleted
 */
 
-
-async function deleteTour(query)
-    {
-    	var object = {tourId : encodeURIComponent(query)};
-    		return await new Promise(function (res, rej){
-    						$.ajax
-    				        ({
-    								url: "/tour",
-    								method: "DELETE",
-    								data: object,
-                    success: function (result) { console.log(result); },
-    								error: function (err) {console.log(err);}
+async function deleteTour(tourId)
+  {
+    var object = {tourId : encodeURIComponent(tourId)};
+    	return await new Promise(function (res, rej){
+    					$.ajax
+    				     ({
+    						url: "/tour",
+    						method: "DELETE",
+    						data: object,
+                success: function (result) {  res(result); },
+    						error: function (err) {console.log(err);}
     						});
     				});
-        }
+    }

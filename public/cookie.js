@@ -26,11 +26,8 @@ function checkCookie() {
   if (username != "") {
    alert("Welcome " + username);
   } else {
-    username = prompt("Please enter your name:", "");
-    password = prompt("Please enter your password:", "");
-    if (username != "" && username != null&&password != "" && password != null) {
-      setCookie(username,password);
-    }
+    alert("Please log in again");
+    window.location = "http://localhost:3000/";
   }
 }
 
