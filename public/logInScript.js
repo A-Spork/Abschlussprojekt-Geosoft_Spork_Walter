@@ -17,7 +17,7 @@ async function logIn(){
     if(name=="admin"&&password=="admin"){
     }else{
     setCookie(name,password);
-    window.location = "http://localhost:3000/public/lastTours.html";
+    window.location = "http://localhost:3000/public/landing.html";
   }
   }
   else{
@@ -34,9 +34,9 @@ async function logIn(){
       return;
     }
     if(await checkUser(name,"")== false && checkName(name) == true){
-      if(await createNewCustomer(name, password)){
+      if(await createNewCustomer(name, password, false)){
       await setCookie(name,password);///////
-      window.location = "http://localhost:3000/public/addTour.html";
+      window.location = "http://localhost:3000/public/landing.html";
       }else{
         while(true){
         alert("Error. Could not create this user. Please contact the admin: 0800 666 666");
@@ -76,12 +76,13 @@ function checkName(username){
      * ´@desc Send Files in textarea to Server to store them
      */
 
-  async function createNewCustomer(username,password)
+  async function createNewCustomer(username,password,message)
     {
         var input = {
           "username": username,
           "password": password,
-          "lastLogIn": Date.now()
+          "message" : message
+
         };
         try
     	{
@@ -101,19 +102,16 @@ function checkName(username){
 
 
 
-        async function customerDbUpdate(username,password)
-        {
-        deleteCustomerUsername(username);
-        await createNewCustomer(username,password);
-        }
+async function customerDbUpdate(username,password,message)
+  {
+    deleteCustomerUsername(username);
+    await createNewCustomer(username,password,message);
+   }
 
 
 
 
 async function logOut(){
-  var username =  getCookie("username");
-  var password= getCookie("password");
-  await customerDbUpdate(username,password);
   deleteCookie();
   window.location = "http://localhost:3000/";
 }

@@ -246,35 +246,105 @@ return unix;
 
 
 function markSingle(){
-var id = document.getElementById("tour").value;
-for(var i=0;i<tours.length;i++){
-  if(id==tours[i].tourId){
-    mark(i);
-    // location.reload();
-    return;
-  }
-}
-alert("TourId not valid");
-}
-
-
-function markAll(){
+  var id = document.getElementById("tour").value;
   for(var i=0;i<tours.length;i++){
-    mark(i);
+    if(id==tours[i].tourId){
+       mark(i);
+       alert("Tour marked");
+       location.reload();
+      return;
+    }
   }
-  // location.reload();
+  alert("TourId not valid");
 }
 
+ function markAll(){
+  for(var i=0;i<tours.length;i++){
+   mark(i);
+  }
+  alert("All Tours marked");
+  location.reload();
+  return;
+}
 
 function mark(i){
   if(tours[i].risk=="true"){
     return;
   }
-  tourDbUpdate(i);
-//////überschneidungen////////////////
+  tourDbUpdate(i,true);
+  contact(tours[i]);
+return;
 }
 
-async function tourDbUpdate(i)
+
+
+function clearSingle(){
+  var id = document.getElementById("tour").value;
+  for(var i=0;i<tours.length;i++){
+    if(id==tours[i].tourId){
+      clear(i);
+      alert("Tour cleared");
+      location.reload();
+      return;
+    }
+  }
+  alert("TourId not valid");
+  return;
+}
+
+
+ function clearAll(){
+  for(var i=0;i<tours.length;i++){
+    clear(i);
+  }
+  alert("All Tours cleared");
+  location.reload();
+  return;
+}
+
+
+function clear(i){
+  if(tours[i].risk=="false"){
+    return;
+  }
+  tourDbUpdate(i,false);
+  return;
+}
+
+
+
+
+async function contact(tour){
+  var matches = await tourGetRequestMatch(tour.line, tour.destination, tour.place, tour.date, tour.category);/////await?!?!?!?
+  for(var i = 0; i<matches.length;i++){
+    if(matches[i].risk == "false"){
+
+      deleteTour(matches[i].tourId);
+      var input = {
+        "tourId": matches[i].tourId,
+        "category":matches[i].category,
+        "line": matches[i].line,
+        "destination": matches[i].destination,
+        "date": matches[i].date,
+        "risk": JSON.parse(true),
+        "username": matches[i].username,
+        "place":matches[i].place
+      };
+        try{
+          await tourPostRequest(input);
+        }
+        catch(e){
+          console.log("PostRequest broke");
+
+        }
+    }
+  var temp = await( customerDbSearchUsernamePassword( matches[i].username,""));
+  customerDbUpdate(matches[i].username,temp[0].password,true);
+  }
+}
+
+
+async function tourDbUpdate(i,risk)
 {
   deleteTour(tours[i].tourId);
   var input = {
@@ -283,8 +353,8 @@ async function tourDbUpdate(i)
     "line": tours[i].line,
     "destination": tours[i].destination,
     "date": tours[i].date,
-    "risk": JSON.parse(true), ///////////////////////////////////////////////
-    "riskDate" : Date.now(),
+    "risk": JSON.parse(risk),
+    // "riskDate" : Date.now(),
     "username": tours[i].username,
     "place":tours[i].place
   };

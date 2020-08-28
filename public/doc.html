@@ -44,8 +44,10 @@ Matr. - Nr.: 459 762, 460 137 -->
 <input id="tour" style=""> Insert the tourId here </input>
 <p></p>
 <button onclick="markSingle()">Mark a single tour with TourId</button>
+<button onclick="clearSingle()">Clear a single tour with TourId</button>
 <p></p>
 <button onclick="markAll()">Mark all displayed tours</button>
+<button onclick="clearAll()">Clear all displayed tours</button>
 <p></p>
 <!-- /////////////////////////////////////////table/////////////////////////// -->
 <style>
@@ -79,8 +81,9 @@ th, td {
   <tbody id = "lastToursBodyDoc"> </tbody>
 </table>
 
-
+  <script src = "cookie.js"></script>
   <script src = "dbScript.js"></script>
+  <script src = "logInScript.js"></script>
   <script src = "geoJSON.js"></script>
   <script src = "/jquery/jquery.min.js"></script>
   <script src = "doc.js"></script>

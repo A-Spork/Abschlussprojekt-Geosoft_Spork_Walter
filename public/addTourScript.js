@@ -200,6 +200,7 @@ function getBusstops(location)
 	x.open("GET", resource, false);
 	x.send();
 	stationDepartures  = JSON.parse(x.response);
+  console.log(stationDepartures);
 }
 
 
@@ -337,7 +338,7 @@ async function addTour(station,id,risk) //Position von Station und der entsprech
       "destination": stationDepartures.boards[station].departures[id].transport.headsign,
       "date": stationDepartures.boards[station].departures[id].time,
       "risk": JSON.parse(risk),
-      "riskDate" : null,
+      // "riskDate" : null,
       "username": username,
       "place":[ {
         "id":stationDepartures.boards[station].place.id,

@@ -43,6 +43,21 @@ app.get('/', (req, res) => {res.sendFile(__dirname + '/public/doc.html');});
 
 
 
+app.post("/customer", (req, res) =>
+{
+  app.locals.db.collection('customer').insertOne(req.body, (error, result) =>
+  {
+    if (error)
+    {
+      console.dir(error);
+    }
+    console.log("insert customer " + JSON.stringify(req.body));
+    res.json(result);
+  });
+});
+
+
+
 app.get("/customer", (req,res) =>
 {
   if(req.query.password==""){
@@ -53,11 +68,13 @@ app.get("/customer", (req,res) =>
   if(req.query.username=="admin"&&req.query.password=="admin"){
     app.locals.db.collection('customer').find({}).toArray((error, result) =>
     {
+      console.log("admin logged in");
       if (error)
       {
         console.dir(error);
       }
       res.json(result);
+      console.log(result);//admin log
     });
     }
   else{
@@ -73,20 +90,6 @@ app.get("/customer", (req,res) =>
      });
 
 
-
-app.post("/customer", (req, res) =>
-{
-
-    app.locals.db.collection('customer').insertOne(req.body, (error, result) =>
-	{
-        if (error)
-		{
-            console.dir(error);
-        }
-          console.log("insert customer " + JSON.stringify(req.body));
-        res.json(result);
-    });
-});
 
 
 
@@ -116,13 +119,34 @@ app.get("/tour", (req,res) =>
   var object={};
     if(decodeURIComponent(req.query.tourId)=="undefined")
     {
-      if(decodeURIComponent(req.query.username)=="admin"){
-      }else{
-        object = {"username" : decodeURIComponent(req.query.username)};//username
+      if(decodeURIComponent(req.query.username)=="undefined")
+      {
+              object = {
+                "line" : decodeURIComponent(req.query.line),
+                "destination" : decodeURIComponent(req.query.destination),
+                "date" : decodeURIComponent(req.query.date),
+                "category" : decodeURIComponent(req.query.category)
+
+                // ,"place" : decodeURIComponent(req.query.place)
+              }
       }
-    }else{
-        object = {"tourId" : (req.query.tourId)};//tourId
+      else
+      {
+          if(decodeURIComponent(req.query.username)=="admin")
+          {
+                ///////object stays empty
+          }
+          else
+          {
+            object = {"username" : decodeURIComponent(req.query.username)};//username
+          }
+      }
     }
+    else
+    {
+      object = {"tourId" : (req.query.tourId)};//tourId
+    }
+
 	app.locals.db.collection('tour').find(object).toArray((error, result) => //find all with the id
   {
 		if (error)

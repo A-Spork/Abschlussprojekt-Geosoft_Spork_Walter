@@ -170,6 +170,28 @@ function tourGetRequestTourId(query)
 }
 
 
+/**
+ * @desc Request data stored in MongoDB and resolves them as promise
+ * @param query to filter stored data
+ */
+function tourGetRequestMatch(line, destination, place, date, category)
+{
+  var encodedLine = encodeURIComponent(line);
+  var encodedDestination = encodeURIComponent(destination);
+  var encodedPlace = encodeURIComponent(place);
+  var encodedDate = encodeURIComponent(date);
+  var encodedCategory = encodeURIComponent(category);
+
+    return new Promise(function (res, rej){
+        $.ajax({
+            url: "/tour" + "?category=" + encodedCategory+"&"+ "destination"+"="+encodedDestination+"&"+ "place"+"="+encodedPlace+"&"+ "date"+"="+encodedDate+"&"+ "line"+"="+encodedLine,
+            type: "get",
+            success: function (result){ res(result);},
+            error: function (err){ console.log(err);}
+        });
+    });
+}
+
 
 /**
 * @function delteTour - Deletes a tour from the DB by its tourId
@@ -185,7 +207,7 @@ async function deleteTour(tourId)
     						url: "/tour",
     						method: "DELETE",
     						data: object,
-                success: function (result) { console.log(result);  res(result); },/////// res(result); neu
+                success: function (result) {  res(result); },
     						error: function (err) {console.log(err);}
     						});
     				});
