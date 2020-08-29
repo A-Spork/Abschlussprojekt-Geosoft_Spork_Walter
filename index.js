@@ -39,7 +39,7 @@ app.get('/', (req, res) => {res.sendFile(__dirname + '/logIn.html');});
 app.get('/', (req, res) => {res.sendFile(__dirname + '/public/addTour.html');});
 app.get('/', (req, res) => {res.sendFile(__dirname + '/public/lastTours.html');});
 app.get('/', (req, res) => {res.sendFile(__dirname + '/public/doc.html');});
-
+app.get('/', (req, res) => {res.sendFile(__dirname + '/public/test.html');});
 
 
 

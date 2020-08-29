@@ -5,7 +5,7 @@
 
 "use strict";
 
-
+alert("We only use essential cookies. If you not accept, use an other app! ");
 var username = getCookie("username");
 var user;
 showMessage();

@@ -21,7 +21,6 @@ async function mainAddTour(){
 
 
 
-
 /**
 * @function showMap -
 */
@@ -145,22 +144,32 @@ function showGeocoding(){
 }
 
 function startGeocoding(){
-  geocoding();
+  var geocodingkey = document.getElementById("geocodingkeyinput").value;
+  var adressString = document.getElementById("adress").value;
+  geocoding(geocodingkey,adressString);
   showGo();
 }
 
-function geocoding()
+
+/**
+* get your own key here: "https://locationiq.com/geocoding"
+*
+*/
+function geocoding(geocodingkey,adressString)
 {
-  var geocodingkey = document.getElementById("geocodingkeyinput").value;
-  var adressString = document.getElementById("adress").value;
 	var resource = "https://eu1.locationiq.com/v1/search.php?key=" + geocodingkey + "&q=" + adressString + "&format=" + "json";
 	var z = new XMLHttpRequest();
 	z.open ("GET", resource, false);
 	z.send();
-  var response=JSON.parse(z.response);
-  position= toGeoJSONPoint (JSON.parse ("[" + response[0].lat + "," + response[0].lon + "]"));
-  console.log("position set");
-	return position;
+  try{
+    var response=JSON.parse(z.response);
+    position= toGeoJSONPoint (JSON.parse ("[" + response[0].lat + "," + response[0].lon + "]"));
+    console.log("position set");
+  	return position;
+  }catch(e){
+    alert(z.response);
+    return JSON.parse(z.response);
+  }
 }
 
 function showCoordinates(){
