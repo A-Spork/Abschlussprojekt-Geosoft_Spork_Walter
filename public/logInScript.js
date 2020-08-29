@@ -15,7 +15,11 @@ async function logIn(){
   }
   if(name=="doc"&&password=="doc"){
     window.location = "http://localhost:3000/public/doc.html";
-  }else{
+  }else if(name=="test"&&password=="test"){
+    setCookie(name,password);
+    window.location = "http://localhost:3000/public/test.html";
+  }
+  else{
   if(await checkUser(name,password)){
     if(name=="admin"&&password=="admin"){
       return;
@@ -63,7 +67,7 @@ async function logIn(){
     return true;
     }
     }
-//Wird der name unterstützt
+//name valid= true, invalid=false
 function checkName(username){
   if(username==""||username==" "||username=="  "||username=="   "||username=="    "||username=="     "||username=="      "||username=="       "||username=="        "
 ||username=="Felix"||username=="Nick"||username=="felix"||username=="nick"||username=="qwertz123456789"||username=="qwertz"||username=="doc"||username=="admin")

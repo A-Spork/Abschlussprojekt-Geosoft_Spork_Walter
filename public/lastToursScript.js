@@ -148,10 +148,9 @@ function getLocation()
 * @function showPosition - Saves the given position as point_modified and shows it on the webpage
 */
 
-function showPosition (position1)
+function showPosition(position1)
 {
 	 position = toGeoJSONPoint([position1.coords.latitude, position1.coords.longitude]);
-
 }
 
 
