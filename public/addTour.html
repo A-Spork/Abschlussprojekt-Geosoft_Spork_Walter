@@ -23,7 +23,7 @@ Matr. - Nr.: 459 762, 460 137 -->
 <p id="adressString" style="display:none">Insert the adress</p>
 <input id="adress" style="display:none">  </input>
 <p id="keystring" style="display:none">Insert the key for the geocoding-api</p>
-<input id="geocodingkeyinput" style="display:none"> </input>
+<input id="geocodingkeyinput" style="display:none">  </input>
 <p></p>
 <button onclick="startGeocoding()" id="GeocodingButton" style = "display:none" >"Start Request"</button>
 
@@ -33,9 +33,11 @@ Matr. - Nr.: 459 762, 460 137 -->
 
 <!-- //Bedienfelder -->
 <p></p>
-<button onclick="mainAddTour();" id="stationMap" style="display:none">Go (Testversion)</button>
-<button onclick="letsGo();" id="station" style="display:none">Go1</button>
-<button onclick="showMap();" id="Map" style="display:none" >Go2</button>
+<p id = "keyinputString" style="display:none">Insert the key for the here transport</p>
+<input id = "keyinput" style="display:none">  </input>
+<p></p>
+<button onclick="mainAddTour();" id="stationMap" style="display:none">Go!</button>
+
 
   <!-- The map and the leaflet scripts for the map -->
 
@@ -55,8 +57,6 @@ Matr. - Nr.: 459 762, 460 137 -->
     <th> Type</th>
     <th> Destination</th>
     <th> Date</th>
-    <th> For More Information visit:</th>
-
 	</tr>
 </thead>
 
@@ -67,7 +67,6 @@ Matr. - Nr.: 459 762, 460 137 -->
     <td id ="Type0"> </td>
     <td id ="Destination0"> </td>
     <td id ="Date0"> </td>
-    <td id ="Info0"> </td>
   </tr>
 
 	<tr id=1>
@@ -76,7 +75,6 @@ Matr. - Nr.: 459 762, 460 137 -->
     <td id ="Type1"> </td>
 		<td id ="Destination1"> </td>
     <td id ="Date1"> </td>
-    <td id ="Info1"> </td>
 
 	</tr>
   <tr id=2>
@@ -85,7 +83,6 @@ Matr. - Nr.: 459 762, 460 137 -->
     <td id ="Type2"> </td>
     <td id ="Destination2"> </td>
     <td id ="Date2"> </td>
-    <td id ="Info2"> </td>
   </tr>
   <tr id=3>
     <td> 4 </td>
@@ -93,7 +90,6 @@ Matr. - Nr.: 459 762, 460 137 -->
     <td id ="Type3"> </td>
     <td id ="Destination3"> </td>
     <td id ="Date3"> </td>
-    <td id ="Info3"> </td>
   </tr>
   <tr id=4>
     <td> 5 </td>
@@ -101,7 +97,6 @@ Matr. - Nr.: 459 762, 460 137 -->
     <td id ="Type4"> </td>
     <td id ="Destination4"> </td>
     <td id ="Date4"> </td>
-    <td id ="Info4"> </td>
   </tr>
 </tbody>
 </table>

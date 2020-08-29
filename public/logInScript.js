@@ -13,8 +13,12 @@ async function logIn(){
     alert("Please fill in password!");
     return;
   }
-  if(checkName(name) && await checkUser(name,password)){
+  if(name=="doc"&&password=="doc"){
+    window.location = "http://localhost:3000/public/doc.html";
+  }else{
+  if(await checkUser(name,password)){
     if(name=="admin"&&password=="admin"){
+      return;
     }else{
     setCookie(name,password);
     window.location = "http://localhost:3000/public/landing.html";
@@ -23,6 +27,7 @@ async function logIn(){
   else{
     alert("Please sign in. Username unknown");
   }
+}
 }
 
 
@@ -61,7 +66,7 @@ async function logIn(){
 //Wird der name unterstützt
 function checkName(username){
   if(username==""||username==" "||username=="  "||username=="   "||username=="    "||username=="     "||username=="      "||username=="       "||username=="        "
-||username=="Felix"||username=="Nick"||username=="felix"||username=="nick"||username=="qwertz123456789"||username=="qwertz")
+||username=="Felix"||username=="Nick"||username=="felix"||username=="nick"||username=="qwertz123456789"||username=="qwertz"||username=="doc"||username=="admin")
   {
     alert("Name not supported");
     return false;

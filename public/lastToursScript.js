@@ -97,13 +97,14 @@ function showMap()
 
 
 function showTable(){
-
+	document.getElementById("lastTours").style = "width: 60%";
+	document.getElementById("lastToursHead").style = "width: 60%";
 	var out = "";
  	for (var i = 0; i < tours.length; i++)
 		{
 			if(tours[i].risk=="true")
 			{
-				out += "<tr id = "+"red"+">\n" +  /////////"red" oder ..."+"red"+"...oder 'red'
+				out += "<tr id = 'red'>\n" +  //"red" oder ..."+"red"+"...oder 'red'
 				"\t\t\t<td id = \"date" + i + "\">" + tours[i].date + "</td>\n" +
 				"\t\t\t<td id = \"departure" + i + "\">" + tours[i].place[0].name + "</td>\n" +
 				"\t\t\t<td id = \"destination" + i + "\">" + tours[i].destination + "</td>\n" +
@@ -111,7 +112,7 @@ function showTable(){
 				"\t\t\t<td id = \"risk" + i + "\">" + tours[i].risk + "</td>\n" +
 				"\t\t</tr>";
 			}else{
-				out += "<tr>\n" +
+				out += "<tr id = 'green'>\n" +
 				"\t\t\t<td id = \"date" + i + "\">" + tours[i].date + "</td>\n" +
 				"\t\t\t<td id = \"departure" + i + "\">" + tours[i].place[0].name + "</td>\n" +
 				"\t\t\t<td id = \"destination" + i + "\">" + tours[i].destination + "</td>\n" +
