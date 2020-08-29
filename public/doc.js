@@ -369,3 +369,7 @@ async function tourDbUpdate(i,risk)
       return false;
     }
 }
+
+function docLogOut(){
+  window.location = "http://localhost:3000";
+}

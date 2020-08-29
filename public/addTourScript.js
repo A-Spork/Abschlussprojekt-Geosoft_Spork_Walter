@@ -20,12 +20,7 @@ async function mainAddTour(){
 }
 
 
-async function letsGo(){
-   getBusstops(position.geometry.coordinates);
-  document.getElementById("station").style="display:none";
-  document.getElementById("Map").style="";
 
-}
 
 /**
 * @function showMap -
@@ -62,7 +57,7 @@ function showMap()
  	}
 
 
-	// current position
+	// add current position
 	var temp = toGeoJSONPoint (JSON.parse ("[" + position.geometry.coordinates[1]+ "," + position.geometry.coordinates[0]+ "]"));
 	var PositionMarker = L.geoJSON (temp).addTo(map);
 	PositionMarker.bindPopup ("You are here!");
@@ -71,26 +66,14 @@ function showMap()
     station=event.layer.id;
     showTable(event.layer.name, event.layer.id);
   }
-
-//Heat
-	// var temp = Array(pointcloud_modified.features.length);
-	// for(var i = 0; i < temp.length ;i++){
-  // temp[i]=[pointcloud_modified.features[i].geometry.coordinates[1],pointcloud_modified.features[i].geometry.coordinates[0]];
-	// }
-		// var Heat = L.heatLayer(temp);
-		// var BusstopsAndHeat = L.featureGroup();
-		// BusstopsAndHeat.addLayer(Heat);
-		// BusstopsAndHeat.addLayer(LayerBusstops);
+  //create Layers
 		var Empty = L.featureGroup();
-
 		var HeatLayer =
 		{
 			 Nothing : Empty,
 			 Busstops: LayerBusstops,
-		   // Heat: Heat,
-			 // BusstopsAndHeat: BusstopsAndHeat
 		};
-
+    //add controlle to map
 		L.control.layers(HeatLayer).addTo(map);
 }
 
@@ -121,39 +104,54 @@ async function showPosition (position1)
 {
 	 position = await toGeoJSONPoint( [position1.coords.latitude, position1.coords.longitude]);
    console.log("position set");
+   hideGeocoding();
+   hideCoordinates();
    showGo();
    return position;
 }
 
 function showGo(){
   document.getElementById("stationMap").style="";
-  document.getElementById("station").style="";
+  document.getElementById("keyinput").style="";
+  document.getElementById("keyinputString").style="";
+}
+
+function hideCoordinates(){
+  document.getElementById("coordinates").style="display:none";
+  document.getElementById("coordinatesButton").style="display:none";
+  document.getElementById("keyinput").style="display:none";
+  document.getElementById("keyinputString").style="display:none";
+  document.getElementById("stationMap").style="display:none";
+}
+function hideGeocoding(){
+  document.getElementById("adress").style="display:none";
+  document.getElementById("adressString").style="display:none";
+  document.getElementById("keystring").style="display:none";
+  document.getElementById("geocodingkeyinput").style="display:none";
+  document.getElementById("GeocodingButton").style="display:none";
+  document.getElementById("keyinput").style="display:none";
+  document.getElementById("keyinputString").style="display:none";
+  document.getElementById("stationMap").style="display:none";
 }
 
 function showGeocoding(){
+  hideCoordinates();
   //neues einlenden
   document.getElementById("adress").style="";
   document.getElementById("geocodingkeyinput").style="";
   document.getElementById("GeocodingButton").style="";
   document.getElementById("keystring").style="";
   document.getElementById("adressString").style="";
-  //andere ausblenden
-  document.getElementById("coordinates").style="display:none";
-  document.getElementById("coordinatesButton").style="display:none";
 }
 
 function startGeocoding(){
   geocoding();
   showGo();
-  // document.getElementById("Map").style="";
 }
 
 function geocoding()
 {
-  // console.log(geokey);
-  var geocodingkey = geokey;
-// console.log(geocodingkey);
-  // var geocodingkey = document.getElementById("geocodingkeyinput").value;
+  var geocodingkey = document.getElementById("geocodingkeyinput").value;
   var adressString = document.getElementById("adress").value;
 	var resource = "https://eu1.locationiq.com/v1/search.php?key=" + geocodingkey + "&q=" + adressString + "&format=" + "json";
 	var z = new XMLHttpRequest();
@@ -163,15 +161,10 @@ function geocoding()
   position= toGeoJSONPoint (JSON.parse ("[" + response[0].lat + "," + response[0].lon + "]"));
   console.log("position set");
 	return position;
-
-
-  // var response = geocoding (key, adressString, format);
-  // document.getElementById("displayResponse").innerHTML = JSON.stringify (response);
-  // adressPoint = toGeoJSONPoint (JSON.parse ("[" + response[0].lat + "," + response[0].lon + "]"));
-  // document.getElementById("displayCoordinates").innerHTML = JSON.stringify (adressPoint);
 }
 
 function showCoordinates(){
+  hideGeocoding();
   document.getElementById("coordinates").style="";
   document.getElementById("coordinatesButton").style="";
 }
@@ -194,13 +187,13 @@ function coordinates(){
 
 function getBusstops(location)
 {
-  // console.log(key);
+  //var key = "";  //insert your here transport api key here, if you do not want to insert it every time...
+  var key = document.getElementById("keyinput").value;
 	var resource = "https://transit.hereapi.com/v8/departures?in=" + location + ";r="+radius+"&apiKey="+key;
 	var x = new XMLHttpRequest();
 	x.open("GET", resource, false);
 	x.send();
 	stationDepartures  = JSON.parse(x.response);
-  console.log(stationDepartures);
 }
 
 
@@ -208,29 +201,28 @@ function getBusstops(location)
 function showTable(id,storage){
 document.getElementById("tableID").style="width:50%";
 
-document.getElementById("myCheck0").style="";
-document.getElementById("myCheck1").style="";
-document.getElementById("myCheck2").style="";
-document.getElementById("myCheck3").style="";
-document.getElementById("myCheck4").style="";
-document.getElementById("myCheck0").style="";
-
-document.getElementById("label0").style="";
-document.getElementById("label1").style="";
-document.getElementById("label2").style="";
-document.getElementById("label3").style="";
-document.getElementById("label4").style="";
-
-document.getElementById("checkboxButton").style="";
-document.getElementById("pinfo").style="";
+for(var j=0;j<5;j++){
+  document.getElementById("myCheck"+j).style="display:none";
+  document.getElementById("label"+j).style="display:none";
+  document.getElementById(""+j).style="display:none";
+}
 
 
-for(var i=0;i<5;i++){
+
+
+
+
+for(var i=0;i<stationDepartures.boards[storage].departures.length;i++){
+  document.getElementById("checkboxButton").style="";
+  document.getElementById("pinfo").style="";
+
+  document.getElementById("myCheck"+i).style="";
+  document.getElementById("label"+i).style="";
+  document.getElementById(""+i).style="";
   document.getElementById("Linie"+JSON.stringify(i)).innerHTML = stationDepartures.boards[storage].departures[i].transport.name;
   document.getElementById("Type"+JSON.stringify(i)).innerHTML = stationDepartures.boards[storage].departures[i].transport.category;
   document.getElementById("Destination"+JSON.stringify(i)).innerHTML = stationDepartures.boards[storage].departures[i].transport.headsign;
   document.getElementById("Date"+JSON.stringify(i)).innerHTML = stationDepartures.boards[storage].departures[i].time;
-  document.getElementById("Info"+JSON.stringify(i)).innerHTML = stationDepartures.boards[storage].departures[i].agency.website;
 }
 }
 
