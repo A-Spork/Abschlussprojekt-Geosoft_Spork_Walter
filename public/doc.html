@@ -5,91 +5,144 @@
 Matr. - Nr.: 459 762, 460 137 -->
 
 <head>
+<title>Doc</title>
+
 <meta charset = "utf-8">
 <meta name = "viewport" content = "width = device-width, initial-scale = 1">
+
 <link rel = "stylesheet" href = "https://unpkg.com/leaflet/dist/leaflet.css"/>
-<title> Doc </title>
+<link rel = "stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel = "stylesheet" href = "https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+   integrity = "sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+   crossorigin = "" #mapid {height: 180px;}/>
+<link rel = "stylesheet" href = "style.css">
 </head>
-<body style = "background-color: cyan;">
-  <h1> Doc</h1>
 
-<input id="username" style=""> Insert the patient´s username </input>
-<p></p>
-<input id="startDate" style=""> Insert the beginning date </input>
-<p></p>
-<input id="endDate" style=""> Insert the ending date</input>
-<p>
-  Accepted Formats:<br>
-   - empty => no restriction <br>
-   - unix timecode<br>
-   - ECMAScript 5 ISO-8601 Format + timezone
-</p>
-<p>example for ECMAScript 5 ISO-8601 Format + timezone: </p>
-<p>2020-08-26T14:32:00+02:00</p>
-<p>YYYY-MM-DDTHH:MM:SS+tt:00</p>
-<button onclick="main()">Search the db for the patient´s tours</button>
+<body id = "myPage" data-spy = "scroll" data-target = ".navbar" data-offset = "60">
+<nav class = "navbar navbar-default navbar-fixed-top">
+	<div class = "container">
+		<div class = "navbar-header">
+			<button type = "button" class = "navbar-toggle" data-toggle = "collapse" data-target = "#myNavbar">
+				<span class = "icon-bar"></span>
+				<span class = "icon-bar"></span>
+				<span class = "icon-bar"></span> 
+			</button>
+			<a class = "navbar-brand" href = "http://localhost:3000/">Corona App</a>
+		</div>
+		<div class = "collapse navbar-collapse" id = "myNavbar">
+			<ul class = "nav navbar-nav navbar-right">
+				<li><a href = "http://localhost:3000/">Log out</a></li>
+			</ul>
+		</div>
+	</div>
+</nav>
 
+<div class = "jumbotron text-center">
+    <h1> The Docpage</h1> 
+    <p>At this website a doctor can choose a user and a period and can mark the tours of a user for risk</p>
+</div>
 
-  <!--//////////////////// The map and the leaflet scripts for the map ////////////////-->
+<div class = "container-fluid bg-cyanlight">
+    <div class = "row">
+        <div class = "panel panel-default text-center">
+            <div class = "panel-heading">
+                <h2>The Inputs</h2>
+				<p>Here you can insert an username and a period with start - and enddate.</p>
+            </div>
+            <div class = "panel-body">
+                <form class = "form-inline">
+                    <div class = "form-group">
+                        <textarea class = "form-control" id = "username" cols = "100">Insert the patient´s username</textarea>
+						<textarea class = "form-control" id = "startDate" cols = "100">Insert the startdate</textarea>
+						<textarea class = "form-control" id = "endDate" cols = "100">Insert the enddate</textarea>
+						<p></p>
+						<p>
+							Accepted formats for the dates:<br>
+							- empty => no restriction <br>
+							- unix timecode<br>
+							- ECMAScript 5 ISO-8601 Format + timezone
+						</p>
+						<p>
+							An example for ECMAScript 5 ISO-8601 format + timezone:<br>
+							2020-08-26T14:32:00+02:00<br>
+							YYYY-MM-DDTHH:MM:SS+tt:00
+						</p>
+                    </div>
+                    <p></p>
+                    <div class = "input-group-btn">
+                        <button type = "button" class = "btn btn-info" onclick = "main();">Search the db for the patient´s tours</button>
+                    </div>
+                </form>
+            </div>
+		</div>
+		<div class = "panel panel-default text-center">
+			<div class = "panel-heading">
+				<h2>The Map with the last tours</h2>
+				<p>Here you can see the stations where the last tours of the patient had startet.</p>
+			</div>
+            <div class = "panel-body">
+				<div id = "main" style = "overflow: auto;"></div>
+				<div class = "center-block" id = "mapSection" style = "width: 600px; height: 400px; float: align;"></div>
+				<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+				<link rel = "stylesheet" href = "http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css"/>
+				<script src = "http://cdn.leafletjs.com/leaflet/v1.5.1/leaflet.js"></script> 
+			</div>
+		</div>
+		<div class = "panel panel-default text-center">
+			<div class = "panel-heading">
+				<h2>The buttons to mark the tours</h2>
+				<p>Here you can mark or clear a single or all tours at the same time.</p>
+			</div>
+            <div class = "panel-body">
+				<form class = "form-inline">
+                    <div class = "form-group">
+						<textarea class = "form-control" id = "tour" cols = "100">Insert the tourId here</textarea>
+					</div>
+					<div class = "input-group-btn">
+						<button type = "button" class = "btn btn-info" onclick = "markSingle();">Mark a single tour over the tourId</button>
+						<button type = "button" class = "btn btn-info" onclick = "clearSingle();">Clear a single tour over the TourId</button>
+						<button type = "button" class = "btn btn-info" onclick = "markAll();">Mark all displayed tours</button>
+						<button type = "button" class = "btn btn-info" onclick = "clearAll();">Clear all displayed tours</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
 
-<div id = "main" style = "overflow: auto;"></div>
-<div class = "center-block" id = "mapSection" style = "width: 600px; height: 400px; float: align;"></div>
-<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<link rel = "stylesheet" href = "http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css"/>
-<script src = "http://cdn.leafletjs.com/leaflet/v1.5.1/leaflet.js"></script>
+<div class = "container-fluid text-center bg-cyanlight" id = "docTableContainer" style = "display: none">
+    <h2>Last tours of the chosen user</h2>
+    <div style = "overflow-x: auto;">
+        <table class = "table table-bordered table-striped text-center" id = "docTable">
+            <thead>
+                <tr>
+                    <th>Date</th>
+					<th>Departure</th>
+					<th>Destination</th>
+					<th>Line</th>
+					<th>Contact to an infected person</th>
+					<th>TourId</th>
+                </tr>
+            </thead>
+            <tbody id = "lastToursBodyDoc"> </tbody>
+        </table>
+    </div>
+</div> 
 
+<footer class = "container-fluid text-center">
+	<a href = "#myPage" title = "To Top">
+		<span class = "glyphicon glyphicon-chevron-up"></span>
+	</a>
+	<p>Made by Adrian Spork and Tatjana Walter in 2020</p>
+	<p>This website was made for a project in the course Geosoftware at the WWU Muenster<p>
+</footer>
 
-<!-- /////////////////////mark tours///////////////////////// -->
-
-<input id="tour" style=""> Insert the tourId here </input>
-<p></p>
-<button onclick="markSingle()">Mark a single tour with TourId</button>
-<button onclick="clearSingle()">Clear a single tour with TourId</button>
-<p></p>
-<button onclick="markAll()">Mark all displayed tours</button>
-<button onclick="clearAll()">Clear all displayed tours</button>
-<p></p>
-<!-- /////////////////////////////////////////table/////////////////////////// -->
-<style>
-table, th, td {
-  border: 1px solid black;
-  border-collapse: collapse;
-}
-th, td {
-  padding: 15px;
-  text-align: left;
-}
-#red {
-  background-color: red;
-}
-#green {
-  background-color: green;
-}
-</style>
-
-<table id = "lastTours" border = "1" style = "width: 60%">
-  <thead>
-  	<tr>
-  		<th color = "red"> Date </th>
-  		<th> Departure </th>
-  		<th> Destination </th>
-      <th> Line </th>
-      <th> Contact to infected person </th>
-      <th> TourId </th>
-  	</tr>
-  </thead>
-  <tbody id = "lastToursBodyDoc"> </tbody>
-</table>
-
-<p></p>
-<button onclick= docLogOut(); >LogOut </button>
-
-  <script src = "cookie.js"></script>
-  <script src = "dbScript.js"></script>
-  <script src = "logInScript.js"></script>
-  <script src = "geoJSON.js"></script>
-  <script src = "/jquery/jquery.min.js"></script>
-  <script src = "doc.js"></script>
+<script src = "cookie.js"></script>
+<script src = "dbScript.js"></script>
+<script src = "logInScript.js"></script>
+<script src = "geoJSON.js"></script>
+<script src = "/jquery/jquery.min.js"></script>
+<script src = "doc.js"></script>
 
 </body>
 </html>

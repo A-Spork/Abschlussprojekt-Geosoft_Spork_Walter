@@ -5,68 +5,98 @@
 Matr. - Nr.: 459 762, 460 137 -->
 
 <head>
+<title>View your tours</title>
+
 <meta charset = "utf-8">
 <meta name = "viewport" content = "width = device-width, initial-scale = 1">
+
 <link rel = "stylesheet" href = "https://unpkg.com/leaflet/dist/leaflet.css"/>
-<title> View your tours </title>
+<link rel = "stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel = "stylesheet" href = "https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+   integrity = "sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+   crossorigin = "" #mapid {height: 180px;}/>
+<link rel = "stylesheet" href = "style.css">
 </head>
-<body style = "background-color: cyan;">
-  <h1> View your tours</h1>
 
+<body <body id = "myPage" data-spy = "scroll" data-target = ".navbar" data-offset = "60">
+<nav class = "navbar navbar-default navbar-fixed-top">
+	<div class = "container">
+		<div class = "navbar-header">
+			<button type = "button" class = "navbar-toggle" data-toggle = "collapse" data-target = "#myNavbar">
+				<span class = "icon-bar"></span>
+				<span class = "icon-bar"></span>
+				<span class = "icon-bar"></span> 
+			</button>
+			<a class = "navbar-brand" href = "http://localhost:3000/">Corona App</a>
+		</div>
+		<div class = "collapse navbar-collapse" id = "myNavbar">
+			<ul class = "nav navbar-nav navbar-right">
+				<li><a href = "landing.html">Messages</a></li>
+				<li><a href = "addTour.html">Add a tour</a></li>
+				<li><a href = "lastTours.html">View your tours</a></li>
+				<li><a href = "test.html">Test</a></li>
+				<li><a href = "http://localhost:3000/">Log out</a></li>
+			</ul>
+		</div>
+	</div>
+</nav>
 
-<button onclick="main2();">Show the map</button>
+<div class = "jumbotron text-center">
+    <h1>View your tours</h1> 
+    <p>At this website you can see your last tours and their risk.</p>
+</div>
 
-  <!-- The map and the leaflet scripts for the map -->
+<div class = "container-fluid bg-cyanlight">
+    <div class = "row">
+        <div class = "panel panel-default text-center">
+            <div class = "panel-heading">
+                <h2>The Map with your last tours</h2>
+				<p>Here you can see the beginning stations of your last tours.</p>
+				<button type = "button" class = "btn btn-info" onclick = "main2();">Show the map</button>
+			</div>
+            <div class = "panel-body">
+                <div id = "main" style = "overflow: auto;"></div>
+				<div class = "center-block" id = "mapSection" style = "width: 600px; height: 400px; float: align;"></div>
+				<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+				<link rel = "stylesheet" href = "http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css"/>
+				<script src = "http://cdn.leafletjs.com/leaflet/v1.5.1/leaflet.js"></script>
+            </div>
+        </div>
+	</div>
+</div>
 
-<div id = "main" style = "overflow: auto;"></div>
-<div class = "center-block" id = "mapSection" style = "width: 600px; height: 400px; float: align;"></div>
-<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<link rel = "stylesheet" href = "http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css"/>
-<script src = "http://cdn.leafletjs.com/leaflet/v1.5.1/leaflet.js"></script>
+<div class = "container-fluid text-center bg-cyanlight" id = "lastToursContainer" style = "display:none">
+    <h2>Last tours</h2>
+    <div style = "overflow-x: auto;">
+        <table class = "table table-bordered table-striped text-center" id = "lastTours">
+            <thead>
+                <tr>
+					<th>Date</th>
+					<th>Departure</th>
+					<th>Destination</th>
+					<th>Line</th>
+					<th>Contact to an infected person</th>
+                </tr>
+            </thead>
+            <tbody id = "lastToursBody"></tbody>
+        </table>
+    </div>
+</div> 
 
-<style>
-table, th, td {
-  border: 1px solid black;
-  border-collapse: collapse;
-}
-th, td {
-  padding: 15px;
-  text-align: left;
-}
-#red {
-  background-color: red;
-}
-#green {
-  background-color: green;
-}
-</style>
+<footer class = "container-fluid text-center">
+	<a href = "#myPage" title = "To Top">
+		<span class = "glyphicon glyphicon-chevron-up"></span>
+	</a>
+	<p>Made by Adrian Spork and Tatjana Walter in 2020</p>
+	<p>This website was made for a project in the course Geosoftware at the WWU Muenster<p>
+</footer>
 
-<table id = "lastTours" border = "1" style = "">
-  <thead id = "lastToursHead" border = "1" style = "display:none">
-  	<tr>
-  		<th> Date </th>
-  		<th> Departure </th>
-  		<th> Destination </th>
-      <th> Line </th>
-      <th> Contact to infected person </th>
-  	</tr>
-  </thead>
-  <tbody id = "lastToursBody"> </tbody>
-</table>
-
-
-
-  <p>
-    <button onclick = ChangeToAdd();>Add a Tour</button>
-    <button onclick = logOut();>LogOut</button>
-  </p>
-  <script src = "dbScript.js"></script>
-  <script src = "cookie.js"></script>
-  <script src = "logInScript.js"></script>
-  <script src = "geoJSON.js"></script>
-  <script src = "lastToursScript.js"></script>
-  <script src = "/jquery/jquery.min.js"></script>
-
+<script src = "dbScript.js"></script>
+<script src = "cookie.js"></script>
+<script src = "logInScript.js"></script>
+<script src = "geoJSON.js"></script>
+<script src = "lastToursScript.js"></script>
+<script src = "/jquery/jquery.min.js"></script>
 
 </body>
 </html>
