@@ -54,11 +54,11 @@ function showMap()
     var fillcolor;
     var color;
     if(tours[i].risk=="true"){
-      fillcolor = "red";
-      color = "red";
+      fillcolor = "#FF0040";
+      color = "#FF0040";
     }else if(tours[i].risk=="false"){
-      fillcolor = "green";
-      color = "green";
+      fillcolor = "#2EFE2E";
+      color = "#2EFE2E";
     }else{
       fillcolor = "pink";
       color = "cyan";
@@ -97,8 +97,8 @@ function showMap()
 
 
 function showTable(){
-	document.getElementById("lastTours").style = "width: 60%";
-	document.getElementById("lastToursHead").style = "width: 60%";
+	document.getElementById("lastToursContainer").style = "width: 100%";
+	document.getElementById("lastTours").style = "width: 100%";
 	var out = "";
  	for (var i = 0; i < tours.length; i++)
 		{

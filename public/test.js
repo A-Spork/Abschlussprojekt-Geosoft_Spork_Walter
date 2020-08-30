@@ -26,16 +26,16 @@ var valid1="+++";
 		var emptyAdressString="";
 		var invalidAdressString="kwuoehtrf9w7z84rtp7nbw4ön9t7vaw978n34tb9nv8zwouthew4rot8zjg48tzg8ojzö458hz4z8üg34h8zü";
 		var invalidKey="346";
-		var validKey=""////////////////////////////////////insert a valid key here
+		var validKey=""////////////////////////////////////insert a valid key for the LocationIQ here
 
 
 		var validAnswer = {"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[51.969283,7.595589]}};
 	// Test the geocoding API
     assert.ok (geocoding(invalidKey,invalidAdressString).error == "Invalid key", "invalid key, invalid adress");
 		assert.ok (geocoding(invalidKey,validAdressString).error == "Invalid key", "invalid key, valid adress");
-		assert.ok (geocoding(validKey,emptyAdressString).error == "Invalid Request", "valid key, empty adress");
+		assert.ok (geocoding(validKey,emptyAdressString).error == "Invalid Request", "valid key, empty adress. Valid key necessary");
 		console.log(geocoding(validKey,invalidAdressString).error);
-		assert.ok (geocoding(validKey,invalidAdressString).error == "Unable to geocode", "valid key, invalid adress");
-		assert.ok (JSON.stringify(geocoding(validKey,validAdressString)) == JSON.stringify(validAnswer), "valid key, valid adress");
+		assert.ok (geocoding(validKey,invalidAdressString).error == "Unable to geocode", "valid key, invalid adress. Valid key necessary");
+		assert.ok (JSON.stringify(geocoding(validKey,validAdressString)) == JSON.stringify(validAnswer), "valid key, valid adress. Valid key necessary");
 		assert.notOk ((geocoding(validKey,validAdressString).error) == "Unknown error - Please try again after some time", "API available");
 });

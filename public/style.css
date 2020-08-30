@@ -1,5 +1,6 @@
 .navbar 
 {
+	font-family: Castellar;
 	margin-bottom: 0;
 	background-color: #2efef7;
 	z-index: 9999;
@@ -27,6 +28,16 @@
 	color: #fff !important;
 }
 	
+
+h1, h2, p
+{ 
+ font-family: Castellar;
+}
+
+
+
+
+
 .jumbotron
 {
 	background-color: #2efef7;
@@ -118,6 +129,7 @@ tr: nth-child(odd)
 
 table, th, td 
 {
+	font-family: Castellar;
     width: auto;
     padding: 10px;
     border: 2px solid #2efef7;

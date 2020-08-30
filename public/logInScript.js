@@ -7,8 +7,9 @@
 
 
 async function logIn(){
-  var name = document.getElementById("logIn").value;
+  var name = document.getElementById("usernameInput").value;
   var password = document.getElementById("password").value;
+  console.log(name,password);
   if(password==""){
     alert("Please fill in password!");
     return;
@@ -36,7 +37,7 @@ async function logIn(){
 
 
   async function signIn(){
-    var name = document.getElementById("logIn").value;
+    var name = document.getElementById("usernameInput").value;
     var password = document.getElementById("password").value;
     if(password==""){
       alert("Please fill in password!");
