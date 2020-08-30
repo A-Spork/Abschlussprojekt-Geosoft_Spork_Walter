@@ -27,6 +27,7 @@ async function mainAddTour(){
 
 function showMap()
 {
+  document.getElementById("mapContainer").style = "width:100%"
 	var map = L.map('mapSection').setView (position.geometry.coordinates, 15);
 	L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 	{
@@ -127,7 +128,7 @@ function hideGeocoding(){
   document.getElementById("adressString").style="display:none";
   document.getElementById("keystring").style="display:none";
   document.getElementById("geocodingkeyinput").style="display:none";
-  document.getElementById("GeocodingButton").style="display:none";
+  document.getElementById("geocodingButton").style="display:none";
   document.getElementById("keyinput").style="display:none";
   document.getElementById("keyinputString").style="display:none";
   document.getElementById("stationMap").style="display:none";
@@ -138,7 +139,7 @@ function showGeocoding(){
   //neues einlenden
   document.getElementById("adress").style="";
   document.getElementById("geocodingkeyinput").style="";
-  document.getElementById("GeocodingButton").style="";
+  document.getElementById("geocodingButton").style="";
   document.getElementById("keystring").style="";
   document.getElementById("adressString").style="";
 }
@@ -208,7 +209,8 @@ function getBusstops(location)
 
 
 function showTable(id,storage){
-document.getElementById("tableID").style="width:50%";
+document.getElementById("tableID").style="width:100%";
+document.getElementById("tableContainer").style="width:100%";
 
 for(var j=0;j<5;j++){
   document.getElementById("myCheck"+j).style="display:none";
@@ -223,12 +225,12 @@ for(var j=0;j<5;j++){
 
 for(var i=0;i<stationDepartures.boards[storage].departures.length;i++){
   document.getElementById("checkboxButton").style="";
-  document.getElementById("pinfo").style="";
+  // document.getElementById("pinfo").style="";
 
   document.getElementById("myCheck"+i).style="";
   document.getElementById("label"+i).style="";
   document.getElementById(""+i).style="";
-  document.getElementById("Linie"+JSON.stringify(i)).innerHTML = stationDepartures.boards[storage].departures[i].transport.name;
+  document.getElementById("Line"+JSON.stringify(i)).innerHTML = stationDepartures.boards[storage].departures[i].transport.name;
   document.getElementById("Type"+JSON.stringify(i)).innerHTML = stationDepartures.boards[storage].departures[i].transport.category;
   document.getElementById("Destination"+JSON.stringify(i)).innerHTML = stationDepartures.boards[storage].departures[i].transport.headsign;
   document.getElementById("Date"+JSON.stringify(i)).innerHTML = stationDepartures.boards[storage].departures[i].time;

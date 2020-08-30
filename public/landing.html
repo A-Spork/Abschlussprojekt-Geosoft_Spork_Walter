@@ -5,34 +5,71 @@
 Matr. - Nr.: 459 762, 460 137 -->
 
 <head>
+<title>Welcome</title>
+
 <meta charset = "utf-8">
 <meta name = "viewport" content = "width = device-width, initial-scale = 1">
+
 <link rel = "stylesheet" href = "https://unpkg.com/leaflet/dist/leaflet.css"/>
-<title> Welcome </title>
+<link rel = "stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel = "stylesheet" href = "style.css">
 </head>
-<body style = "background-color: cyan;">
 
+<body id = "myPage" data-spy = "scroll" data-target = ".navbar" data-offset = "60">
+<nav class = "navbar navbar-default navbar-fixed-top">
+	<div class = "container">
+		<div class = "navbar-header">
+			<button type = "button" class = "navbar-toggle" data-toggle = "collapse" data-target = "#myNavbar">
+				<span class = "icon-bar"></span>
+				<span class = "icon-bar"></span>
+				<span class = "icon-bar"></span>
+			</button>
+			<a class = "navbar-brand" href = "http://localhost:3000/">Corona App</a>
+		</div>
+		<div class = "collapse navbar-collapse" id = "myNavbar">
+			<ul class = "nav navbar-nav navbar-right">
+				<li><a href = "landing.html">Messages</a></li>
+				<li><a href = "addTour.html">Add a tour</a></li>
+				<li><a href = "lastTours.html">View your tours</a></li>
+				<li><a href = "test.html">Test</a></li>
+				<li><a href = "http://localhost:3000/">Log out</a></li>
+			</ul>
+		</div>
+	</div>
+</nav>
 
-  <h1>Welcome</h1>
+<div class = "jumbotron text-center">
+    <h1>Welcome</h1>
+    <p>At this website you get the message if you had contact to an infected person.</p>
+</div>
 
+<div class = "container-fluid bg-cyanlight">
+    <div class = "row">
+        <div class = "panel panel-default text-center">
+            <div class = "panel-heading">
+                <h2>The message</h2>
+				<p id = "message"></p>
+            </div>
+        </div>
+	</div>
+</div>
 
-  <h2 id = "message"></h2>
+<!-- Source of the picture: https://www.pexels.com/de-de/foto/gesundheit-krankenhaus-labor-medizinisch-3786158/ -->
+<img  style="width:100%"src = "viruspicture.jpg" alt = "A picture for the virus"/>
 
+<footer class = "container-fluid text-center">
+	<a href = "#myPage" title = "To Top">
+		<span class = "glyphicon glyphicon-chevron-up"></span>
+	</a>
+	<p>Made by Adrian Spork and Tatjana Walter in 2020</p>
+	<p>This website was made for a project in the course Geosoftware at the WWU Muenster<p>
+</footer>
 
-
-
-  <p>
-  <button onclick = changeToView();>View your tours</button>
-  <button onclick = ChangeToAdd();>Add a Tour</button>
-  <button onclick = logOut();>LogOut</button>
-  </p>
-
-
-  <script src = "dbScript.js"></script>
-  <script src = "cookie.js"></script>
-  <script src = "/jquery/jquery.min.js"></script>
-  <script src = "logInScript.js"></script>
-  <script src = "landing.js"></script>
+<script src = "dbScript.js"></script>
+<script src = "cookie.js"></script>
+<script src = "/jquery/jquery.min.js"></script>
+<script src = "logInScript.js"></script>
+<script src = "landing.js"></script>
 
 </body>
 </html>
