@@ -138,7 +138,21 @@ document.getElementById("docTableContainer").style="width:100%";
 document.getElementById("lastToursBodyDoc").innerHTML = out;
 }
 
+function exampleDateformat()
+{
+	document.getElementById("timeFormatString").style = "display: none";
+	document.getElementById("timeFormatList").style = "display: none";
+	document.getElementById("dateFormatString").style = "";
+	document.getElementById("dateFormatList").style = "";
+}
 
+function exampleTimeformat()
+{
+	document.getElementById("dateFormatString").style = "display: none";
+	document.getElementById("dateFormatList").style = "display: none";
+	document.getElementById("timeFormatString").style = "";
+	document.getElementById("timeFormatList").style = "";
+}
 
 function timefilter(){
 

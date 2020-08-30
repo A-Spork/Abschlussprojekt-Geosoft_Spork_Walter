@@ -13,12 +13,12 @@ Matr. - Nr.: 459 762, 460 137 -->
 <link rel = "stylesheet" href = "https://unpkg.com/leaflet/dist/leaflet.css"/>
 <link rel = "stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <link rel = "stylesheet" href = "https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
-   integrity = "sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-   crossorigin = "" #mapid {height: 180px;}/>
+	integrity = "sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+	crossorigin = "" #mapid {height: 180px;}/>
 <link rel = "stylesheet" href = "style.css">
 </head>
 
-<body <body id = "myPage" data-spy = "scroll" data-target = ".navbar" data-offset = "60">
+<body body id = "myPage" data-spy = "scroll" data-target = ".navbar" data-offset = "60">
 <nav class = "navbar navbar-default navbar-fixed-top">
 	<div class = "container">
 		<div class = "navbar-header">
@@ -48,13 +48,15 @@ Matr. - Nr.: 459 762, 460 137 -->
 
 <div class = "container-fluid bg-cyanlight">
     <div class = "row">
+	
+		<!-- The map with the last tours -->
         <div class = "panel panel-default text-center">
             <div class = "panel-heading">
                 <h2>The Map with your last tours</h2>
 				<p>Here you can see the beginning stations of your last tours.</p>
 				<button type = "button" class = "btn btn-info" onclick = "main2();">Show the map</button>
 			</div>
-            <div class = "panel-body">
+            <div class = "panel-body" id = "mapLastTours" style = "display: none">
                 <div id = "main" style = "overflow: auto;"></div>
 				<div class = "center-block" id = "mapSection" style = "width: 90%; height: 500px; float: align;"></div>
 				<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -62,32 +64,38 @@ Matr. - Nr.: 459 762, 460 137 -->
 				<script src = "http://cdn.leafletjs.com/leaflet/v1.5.1/leaflet.js"></script>
             </div>
         </div>
+		
+		<!-- The table with the last tours -->
+		<div class = "panel panel-default text-center" id = "lastToursContainer" style = "display:none">
+			<div class = "panel-heading">
+				<h2>Last tours</h2>
+				<p>Here you can see the tours you took and their risk.</p>
+			</div>
+			<div class = "panel-body">
+				<div style = "overflow-x: auto;">
+					<table class = "table table-bordered table-striped text-center" id = "lastTours">
+						<thead>
+					 		<tr>
+								<th>Date</th>
+								<th>Departure</th>
+								<th>Destination</th>
+								<th>Line</th>
+								<th>Contact to an infected person</th>
+							</tr>
+						</thead>
+						<tbody id = "lastToursBody"></tbody>
+					</table>
+				</div>
+			</div>
+		</div>
 	</div>
-</div>
-
-<div class = "container-fluid text-center bg-cyanlight" id = "lastToursContainer" style = "display:none">
-    <h2>Last tours</h2>
-    <div style = "overflow-x: auto;">
-        <table class = "table table-bordered table-striped text-center" id = "lastTours">
-            <thead>
-                <tr>
-					<th>Date</th>
-					<th>Departure</th>
-					<th>Destination</th>
-					<th>Line</th>
-					<th>Contact to an infected person</th>
-                </tr>
-            </thead>
-            <tbody id = "lastToursBody"></tbody>
-        </table>
-    </div>
 </div>
 
 <footer class = "container-fluid text-center">
 	<a href = "#myPage" title = "To Top">
 		<span class = "glyphicon glyphicon-chevron-up"></span>
 	</a>
-	<p>Made by Adrian Spork and Tatjana Walter in 2020</p>
+	<p>Made by Adrian Spork and Jana Walter in 2020</p>
 	<p>This website was made for a project in the course Geosoftware at the WWU Muenster<p>
 </footer>
 
@@ -97,6 +105,5 @@ Matr. - Nr.: 459 762, 460 137 -->
 <script src = "geoJSON.js"></script>
 <script src = "lastToursScript.js"></script>
 <script src = "/jquery/jquery.min.js"></script>
-
 </body>
 </html>

@@ -111,13 +111,15 @@ async function showPosition (position1)
 }
 
 function showGo(){
+	document.getElementById("footerGeofields").style="";
   document.getElementById("stationMap").style="";
   document.getElementById("keyinput").style="";
   document.getElementById("keyinputString").style="";
 }
 
 function hideCoordinates(){
-  document.getElementById("coordinates").style="display:none";
+	document.getElementById("coordinatesString").style="display:none";
+  document.getElementById("coordinatesInput").style="display:none";
   document.getElementById("coordinatesButton").style="display:none";
   document.getElementById("keyinput").style="display:none";
   document.getElementById("keyinputString").style="display:none";
@@ -136,7 +138,7 @@ function hideGeocoding(){
 
 function showGeocoding(){
   hideCoordinates();
-  //neues einlenden
+  document.getElementById("footerGeofields").style="";
   document.getElementById("adress").style="";
   document.getElementById("geocodingkeyinput").style="";
   document.getElementById("geocodingButton").style="";
@@ -175,12 +177,14 @@ function geocoding(geocodingkey,adressString)
 
 function showCoordinates(){
   hideGeocoding();
-  document.getElementById("coordinates").style="";
+  document.getElementById("footerGeofields").style="";
+  document.getElementById("coordinatesString").style="";
+  document.getElementById("coordinatesInput").style="";
   document.getElementById("coordinatesButton").style="";
 }
 
 function coordinates(){
-  position = toGeoJSONPoint( JSON.parse( "[" + document.getElementById("coordinates").value + "]"));
+  position = toGeoJSONPoint( JSON.parse( "[" + document.getElementById("coordinatesInput").value + "]"));
   showGo();
 
   return position;
