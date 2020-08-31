@@ -3,13 +3,13 @@ const mongodb = require('mongodb');
 const port = 3000;
 const app = express();
 
-app.use (express.json());
-app.use (express.urlencoded({extended: true}));
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 
 /**
 * Connects to the mongodb itemdb and creates the collections tour and customer
 */
-async function connectMongoDB ()
+async function connectMongoDB()
 {
     try
 	{
@@ -26,10 +26,10 @@ async function connectMongoDB ()
         console.log("Using db: " + app.locals.db.databaseName);
 
 		// Clear collections
-        // app.locals.db.collection("tour").drop( (err,delOK) => {if(delOK) console.log("collection tour cleared");});
-        // app.locals.db.collection("customer").drop( (err,delOK) => {if(delOK) console.log("collection customer cleared");});
+        // app.locals.db.collection("tour").drop((err,delOK) => {if(delOK) console.log("collection tour cleared");});
+        // app.locals.db.collection("customer").drop((err,delOK) => {if(delOK) console.log("collection customer cleared");});
     }
-    catch (error)
+    catch(error)
 	  {
       console.dir(error);
       setTimeout(connectMongoDB, 3000);
@@ -50,7 +50,7 @@ app.post("/customer", (req, res) =>
 {
 	app.locals.db.collection('customer').insertOne(req.body, (error, result) =>
 	{
-		if (error)
+		if(error)
 		{
 			console.dir(error);
 		}
@@ -64,7 +64,7 @@ app.post("/customer", (req, res) =>
 */
 app.get("/customer", (req,res) =>
 {
-	if (req.query.password == "")
+	if(req.query.password == "")
 	{
 		var object = {username : req.query.username};
 	}
@@ -74,24 +74,24 @@ app.get("/customer", (req,res) =>
 	}
 
 	// If the admin logs in there will be shown all users in the db at the server
-	if (req.query.username == "admin" && req.query.password == "admin")
+	if(req.query.username == "admin" && req.query.password == "admin")
 	{
 		app.locals.db.collection('customer').find({}).toArray((error, result) =>
 		{
 			console.log("admin logged in");
-			if (error)
+			if(error)
 			{
 				console.dir(error);
 			}
 			res.json(result);
-			console.log (result);
+			console.log(result);
 		});
     }
 	else
 	{
 		app.locals.db.collection('customer').find(object).toArray((error, result) =>
 		{
-		    if (error)
+		    if(error)
 		    {
 			    console.dir(error);
 		    }
@@ -109,7 +109,7 @@ app.delete("/customer", (req, res) =>
     var object = {username : req.body.username};
     app.locals.db.collection('customer').deleteOne(object, (error, result) =>
 	{
-		if (error)
+		if(error)
 		{
 			console.dir(error);
 		}
@@ -128,10 +128,10 @@ app.get("/tour", (req,res) =>
 {
 	var object = {};
 	// If the tourId is defined, the object is the tourId
-    if (decodeURIComponent(req.query.tourId) == "undefined")
+    if(decodeURIComponent(req.query.tourId) == "undefined")
     {
 		// If the username is defined, the object is the username
-		if (decodeURIComponent(req.query.username) == "undefined")
+		if(decodeURIComponent(req.query.username) == "undefined")
 		{
 			// Else the object is defined with the line, the destination, the date and the category
             object =
@@ -145,7 +145,7 @@ app.get("/tour", (req,res) =>
 		else
 		{
 			// If the username is "admin" all objects in the db will be shown
-			if (decodeURIComponent(req.query.username) == "admin")
+			if(decodeURIComponent(req.query.username) == "admin")
 			{}
 			else
 			{
@@ -160,7 +160,7 @@ app.get("/tour", (req,res) =>
   	app.locals.db.collection('tour').find(object).toArray((error, result) =>
   	{
   		//All objects from the tour collection which fit at the chosen object will be returned
-  		if (error)
+  		if(error)
   		{
   			console.dir(error);
   		}
@@ -175,7 +175,7 @@ app.post("/tour", (req, res) =>
 {
     app.locals.db.collection('tour').insertOne(req.body, (error, result) =>
 	{
-        if (error)
+        if(error)
 		{
             console.dir(error);
         }
@@ -192,7 +192,7 @@ app.delete("/tour", (req, res) =>
 	var object = {tourId : decodeURIComponent(req.body.tourId)};
     app.locals.db.collection('tour').deleteOne(object, (error, result) =>
 	{
-		if (error)
+		if(error)
 		{
 			console.dir(error);
 		}

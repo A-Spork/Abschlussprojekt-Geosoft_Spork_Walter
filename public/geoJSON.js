@@ -11,7 +11,7 @@
 * @return newGeopoint - The point as GeoJSON point
 */
 
-function toGeoJSONPoint (coordinatesPoint)
+function toGeoJSONPoint(coordinatesPoint)
 {
 	var newGeopoint =
 	{

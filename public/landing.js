@@ -5,9 +5,9 @@
 
 "use strict";
 
-alert ("We only use essential cookies. If you not accept, use an other app!");
-var username = getCookie ("username");
-showMessage ();
+alert("We only use essential cookies. If you not accept, use an other app!");
+var username = getCookie("username");
+showMessage();
 
 
 /**
@@ -15,18 +15,16 @@ showMessage ();
 * @var user - Saves the user to set the message attribut to false again after he logged in
 * @var info - The message
 */
-
-async function showMessage ()
+async function showMessage()
 {
-	var user = await customerDbSearchUsernamePassword (username, "");
+	var user = await customerDbSearchUsernamePassword(username, "");
 	if (user[0].message == "true")
 	{
 		var info = "You got a problem";
 		document.getElementById("message").innerHTML = info;
-		alert (info);
-		
-		// With this command the message will only be delivered once!
-		customerDbUpdate (user[0].username, user[0].password, false)
+		alert(info);
+		// The message will only be delivered once!
+		customerDbUpdate(user[0].username, user[0].password, false)
 	}
 	else
 	{

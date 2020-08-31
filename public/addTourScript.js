@@ -31,17 +31,17 @@ async function mainAddTour(){
 function showMap()
 {
   document.getElementById("mapContainer").style = "width:100%"
-	var map = L.map('mapSection').setView (position.geometry.coordinates, 15);
+	var map = L.map('mapSection').setView(position.geometry.coordinates, 15);
 	L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 	{
 		maxZoom: 18,
 		attribution: 'Leaflet, OpenStreetMapContributors',
 	}).addTo(map);
    var LayerBusstops = L.featureGroup().addTo(map).on("click",event);
- 	for (var i = 0; i < stationDepartures.boards.length; i++)
+ 	for(var i = 0; i < stationDepartures.boards.length; i++)
 	{
 		var Circle =
-    L.circle (
+    L.circle(
       [stationDepartures.boards[i].place.location.lat,
       stationDepartures.boards[i].place.location.lng],
 		{
@@ -59,9 +59,9 @@ function showMap()
  	}
 
 	// add current position
-	var temp = toGeoJSONPoint (JSON.parse ("[" + position.geometry.coordinates[1]+ "," + position.geometry.coordinates[0]+ "]"));
-	var PositionMarker = L.geoJSON (temp).addTo(map);
-	PositionMarker.bindPopup ("You are here!");
+	var temp = toGeoJSONPoint(JSON.parse("[" + position.geometry.coordinates[1]+ "," + position.geometry.coordinates[0]+ "]"));
+	var PositionMarker = L.geoJSON(temp).addTo(map);
+	PositionMarker.bindPopup("You are here!");
 
   function event(event){
     station=event.layer.id;
@@ -87,7 +87,7 @@ function showMap()
 
 async function getLocation()
 {
-	if (navigator.geolocation)
+	if(navigator.geolocation)
 	{
 	await navigator.geolocation.getCurrentPosition( await showPosition);
 	}
@@ -102,7 +102,7 @@ async function getLocation()
 * @param position1 the given userposition
 * @return the position in GeoJSON-format
 */
-async function showPosition (position1)
+async function showPosition(position1)
 {
 	 position = await toGeoJSONPoint( [position1.coords.latitude, position1.coords.longitude]);
    console.log("position set");
@@ -188,11 +188,11 @@ function geocoding(geocodingkey,adressString)
 {
 	var resource = "https://eu1.locationiq.com/v1/search.php?key=" + geocodingkey + "&q=" + adressString + "&format=" + "json";
 	var z = new XMLHttpRequest();
-	z.open ("GET", resource, false);
+	z.open("GET", resource, false);
 	z.send();
   try{
     var response=JSON.parse(z.response);
-    position= toGeoJSONPoint (JSON.parse ("[" + response[0].lat + "," + response[0].lon + "]"));
+    position= toGeoJSONPoint(JSON.parse("[" + response[0].lat + "," + response[0].lon + "]"));
     console.log("position set");
   	return position;
   }catch(e){
@@ -270,9 +270,9 @@ for(var j=0;j<5;j++){
 }
 //onclick function
 var table = document.getElementById("tableID");
-if (table != null) {
-    for (var i = 0; i < table.rows.length; i++) {
-            table.rows[i].onclick = function () {
+if(table != null) {
+    for(var i = 0; i < table.rows.length; i++) {
+            table.rows[i].onclick = function() {
             tableText(this);
         };
     }

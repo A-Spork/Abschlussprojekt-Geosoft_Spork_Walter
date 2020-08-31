@@ -8,48 +8,47 @@
 
 /**
 * @function logIn - Function to log in with an username and a password, the usernames doc, admin and test are intercepted
-* @username doc - You can go directly to the docpage (Password = "doc")
-* @username test - You can go directly to the testpage (Password = "test")
-* @username admin - You can see all users in the db at the server console (Password = "admin")
+* @username doc - You can go directly to the docpage(Password = "doc")
+* @username test - You can go directly to the testpage(Password = "test")
+* @username admin - You can see all users in the db at the server consolePassword = "admin")
 * @var name - The username will be checked and saved in a cookie
 * @var password - The password will be checked and saved in a cookie
 */
-
-async function logIn ()
+async function logIn()
 {
 	var name = document.getElementById("usernameInput").value;
 	var password = document.getElementById("password").value;
-	if (password == "")
+	if(password == "")
 	{
 		alert("Please fill in password!");
 		return;
 	}
-	if (name == "doc" && password == "doc")
+	if(name == "doc" && password == "doc")
 	{
 		window.location = "http://localhost:3000/public/doc.html";
 	}
-	else if (name == "test" && password == "test")
+	else if(name == "test" && password == "test")
 	{
-		setCookie (name, password);
+		setCookie(name, password);
 		window.location = "http://localhost:3000/public/test.html";
 	}
 	else
 	{
-		if (await checkUser (name, password))
+		if(await checkUser(name, password))
 		{
-			if (name == "admin" && password == "admin")
+			if(name == "admin" && password == "admin")
 			{
 				return;
 			}
 			else
 			{
-				setCookie (name, password);
+				setCookie(name, password);
 				window.location = "http://localhost:3000/public/landing.html";
 			}
 		}
 		else
 		{
-			alert ("Please sign in. Username unknown");
+			alert("Please sign in. Username unknown");
 		}
 	}
 }
@@ -60,34 +59,33 @@ async function logIn ()
 * @var name - The username will be checked and saved in a cookie
 * @var password - The password will be checked and saved in a cookie
 */
-
-async function signIn ()
+async function signIn()
 {
     var name = document.getElementById("usernameInput").value;
     var password = document.getElementById("password").value;
-    if (password == "")
+    if(password == "")
 	{
-		alert ("Please fill in password!");
+		alert("Please fill in password!");
 		return;
     }
-    if (await checkUser (name, "") == false && checkName (name) == true)
+    if(await checkUser(name, "") == false && checkName(name) == true)
 	{
-		if (await createNewCustomer (name, password, false))
+		if(await createNewCustomer(name, password, false))
 		{
-			await setCookie (name, password);
+			await setCookie(name, password);
 			window.location = "http://localhost:3000/public/landing.html";
 		}
 		else
 		{
-			while (true)
+			while(true)
 			{
-				alert ("Error. Could not create this user. Please contact the admin: 0800 666 666");
+				alert("Error. Could not create this user. Please contact the admin: 0800 666 666");
 			}
 		}
     }
 	else
     {
-		alert ("Please login. Already registered");
+		alert("Please login. Already registered");
     }
 }
 
@@ -97,11 +95,10 @@ async function signIn ()
 * @param username - The username to check
 * @param password - The password to check
 */
-
-async function checkUser (username, password)
+async function checkUser(username, password)
 {
-    var temp = await customerDbSearchUsernamePassword (username, password);
-    if (temp.length == 0)
+    var temp = await customerDbSearchUsernamePassword(username, password);
+    if(temp.length == 0)
 	{
 		return false;
     }
@@ -116,15 +113,14 @@ async function checkUser (username, password)
 * @function checkUser - Checks if the username is supported
 * @param username - The username to check
 */
-
-function checkName (username)
+function checkName(username)
 {
-	if (username == "" || username == " " || username == "  " || username == "   " || username == "    " || username == "     "
+	if(username == "" || username == " " || username == "  " || username == "   " || username == "    " || username == "     "
 		|| username == "      " || username == "       " || username == "        " || username == "Felix" || username == "Nick"
 		|| username == "felix" || username == "nick" || username == "qwertz123456789" || username == "qwertz" || username == "doc"
 		|| username == "admin" || username == "test")
 	{
-		alert ("Name not supported");
+		alert("Name not supported");
 		return false;
 	}
 	else
@@ -141,10 +137,9 @@ function checkName (username)
 * @param message - The overgiven message
 * @var input - The inputobject for the db
 */
-
-async function createNewCustomer (username, password, message)
+async function createNewCustomer(username, password, message)
 {
-    var input = 
+    var input =
 	{
         "username": username,
         "password": password,
@@ -152,13 +147,13 @@ async function createNewCustomer (username, password, message)
     };
     try
   	{
-        await customerPostRequest (input);
+        await customerPostRequest(input);
        	return true;
     }
-    catch (e)
+    catch(e)
   	{
         console.log(e);
-        alert ("Error");
+        alert("Error");
         return false;
     }
 }
@@ -170,20 +165,18 @@ async function createNewCustomer (username, password, message)
 * @param password - The password of the user
 * @param message - The message of the user says if he has a risk to be infected or not
 */
-
-async function customerDbUpdate (username, password, message)
+async function customerDbUpdate(username, password, message)
 {
-    deleteCustomerUsername (username);
-    await createNewCustomer (username, password, message);
+    deleteCustomerUsername(username);
+    await createNewCustomer(username, password, message);
 }
 
 
 /**
 * @logOut - Logs the user out, deletes his cookies and jumps back to the login - page
 */
-
-async function logOut ()
+async function logOut()
 {
-	deleteCookie ();
+	deleteCookie();
 	window.location = "http://localhost:3000/";
 }

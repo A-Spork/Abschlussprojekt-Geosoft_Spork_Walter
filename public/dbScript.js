@@ -22,8 +22,8 @@ async function customerPostRequest(dat)
             url: "/customer",
             data: dat,
             type: "post",
-            success: function (result) {res(result);},
-            error: function (err) { console.log(err); }
+            success: function(result) {res(result);},
+            error: function(err) { console.log(err); }
         });
     });
 }
@@ -37,13 +37,13 @@ async function customerPostRequest(dat)
 
 async  function customerGetRequestUsername(query)
 {
-    return new Promise(function (res, rej){
+    return new Promise(function(res, rej){
         $.ajax({
             url: "/customer" +"?username="+encodeURIComponent(query.username)+"&"+ "password"+"="+encodeURIComponent(query.password),
             type: "get",
 
-            success: function (result) {res(result);},
-            error: function (err) {console.log(err);}
+            success: function(result){res(result);},
+            error: function(err){console.log(err);}
         });
     });
 }
@@ -54,7 +54,7 @@ async  function customerGetRequestUsername(query)
 
 async function customerDbSearchUsernamePassword(username,password)
 {
-  if (password==""){
+  if(password==""){
     var query={
       "username": username,
       "password": ""
@@ -65,8 +65,6 @@ async function customerDbSearchUsernamePassword(username,password)
       "password": password
     }
   }
-  // query = ?name=geo/////////////////////////////////////////////////////////////
-  // var query = "?tourId="+ tourId; //////////////////////////oder so ähnlich
   var temp = await customerGetRequestUsername(query);
   return temp;
 }
@@ -74,17 +72,18 @@ async function customerDbSearchUsernamePassword(username,password)
 async function deleteCustomerUsername(username)
     {
     	var temp = {username : username};
-    		return await new Promise(function (res, rej){
+    		return await new Promise(function(res, rej){
     						$.ajax
     				        ({
     								url: "/customer",
     								method: "DELETE",
     								data: temp,
-    								success: function (result) { res(result); },
-    								error: function (err) {console.log(err);}
+    								success: function(result) { res(result); },
+    								error: function(err) {console.log(err);}
     						});
     				});
         }
+
 
 
 // Tour
@@ -104,8 +103,8 @@ async function tourPostRequest(dat)
             url: "/tour",
             data: dat,
             type: "post",
-            success: function (result) {res(result);},
-            error: function (err) { console.log(err); }
+            success: function(result) {res(result);},
+            error: function(err) { console.log(err); }
         });
     });
 }
@@ -141,12 +140,12 @@ async function tourDbSearchUsername(username)
 function tourGetRequestUsername(query)
 {
   var encodedUsername= encodeURIComponent(query.username);
-    return new Promise(function (res, rej){
+    return new Promise(function(res, rej){
         $.ajax({
             url: "/tour" + "?username=" + encodedUsername,
             type: "get",
-            success: function (result){ res(result);},
-            error: function (err){ console.log(err);}
+            success: function(result){ res(result);},
+            error: function(err){ console.log(err);}
         });
     });
 }
@@ -159,12 +158,12 @@ function tourGetRequestUsername(query)
 function tourGetRequestTourId(query)
 {
   var encodedId = encodeURIComponent(query.tourId);
-    return new Promise(function (res, rej){
+    return new Promise(function(res, rej){
         $.ajax({
             url: "/tour" + "?tourId=" + encodedId,
             type: "get",
-            success: function (result){ res(result);},
-            error: function (err){ console.log(err);}
+            success: function(result){ res(result);},
+            error: function(err){ console.log(err);}
         });
     });
 }
@@ -182,12 +181,12 @@ function tourGetRequestMatch(line, destination, place, date, category)
   var encodedDate = encodeURIComponent(date);
   var encodedCategory = encodeURIComponent(category);
 
-    return new Promise(function (res, rej){
+    return new Promise(function(res, rej){
         $.ajax({
             url: "/tour" + "?category=" + encodedCategory+"&"+ "destination"+"="+encodedDestination+"&"+ "place"+"="+encodedPlace+"&"+ "date"+"="+encodedDate+"&"+ "line"+"="+encodedLine,
             type: "get",
-            success: function (result){ res(result);},
-            error: function (err){ console.log(err);}
+            success: function(result){ res(result);},
+            error: function(err){ console.log(err);}
         });
     });
 }
@@ -201,14 +200,14 @@ function tourGetRequestMatch(line, destination, place, date, category)
 async function deleteTour(tourId)
   {
     var object = {tourId : encodeURIComponent(tourId)};
-    	return await new Promise(function (res, rej){
+    	return await new Promise(function(res, rej){
     					$.ajax
     				     ({
     						url: "/tour",
     						method: "DELETE",
     						data: object,
-                success: function (result) {  res(result); },
-    						error: function (err) {console.log(err);}
+                success: function(result) {  res(result); },
+    						error: function(err) {console.log(err);}
     						});
     				});
     }
