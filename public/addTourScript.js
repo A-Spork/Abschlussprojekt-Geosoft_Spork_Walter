@@ -12,8 +12,10 @@ var position;
 var stationDepartures;
 var radius=50000;
 
-
-
+/**
+* @function mainAddTour
+* requests the locations of busstops near the set location and displays them in a map
+*/
 async function mainAddTour(){
   await getBusstops(position.geometry.coordinates);
   await showMap();
@@ -22,9 +24,10 @@ async function mainAddTour(){
 
 
 /**
-* @function showMap -
+* @function showMap
+* Creates a leafletmap and displays the saved Busstops and the userposition
+* adds layercontroll and popups into the map
 */
-
 function showMap()
 {
   document.getElementById("mapContainer").style = "width:100%"
@@ -53,9 +56,7 @@ function showMap()
 
 		 // circle.addTo(map);
 		LayerBusstops.addLayer(Circle);
-
  	}
-
 
 	// add current position
 	var temp = toGeoJSONPoint (JSON.parse ("[" + position.geometry.coordinates[1]+ "," + position.geometry.coordinates[0]+ "]"));
@@ -68,13 +69,13 @@ function showMap()
   }
   //create Layers
 		var Empty = L.featureGroup();
-		var HeatLayer =
+		var Layercontrole =
 		{
 			 Nothing : Empty,
 			 Busstops: LayerBusstops,
 		};
     //add controlle to map
-		L.control.layers(HeatLayer).addTo(map);
+		L.control.layers(Layercontrole).addTo(map);
 }
 
 
@@ -98,8 +99,9 @@ async function getLocation()
 
 /**
 * @function showPosition - Saves the given position as point_modified and shows it on the webpage
+* @param position1 the given userposition
+* @return the position in GeoJSON-format
 */
-
 async function showPosition (position1)
 {
 	 position = await toGeoJSONPoint( [position1.coords.latitude, position1.coords.longitude]);
@@ -110,6 +112,10 @@ async function showPosition (position1)
    return position;
 }
 
+/**
+* @function showGo
+* displays the (hidden) inputs and buttons needed for using the API
+*/
 function showGo(){
 	document.getElementById("footerGeofields").style="";
   document.getElementById("stationMap").style="";
@@ -117,6 +123,10 @@ function showGo(){
   document.getElementById("keyinputString").style="";
 }
 
+/**
+* @function hideCoordinates
+* hides the  inputs and buttons needed for setting the position via coordinates
+*/
 function hideCoordinates(){
 	document.getElementById("coordinatesString").style="display:none";
   document.getElementById("coordinatesInput").style="display:none";
@@ -125,6 +135,11 @@ function hideCoordinates(){
   document.getElementById("keyinputString").style="display:none";
   document.getElementById("stationMap").style="display:none";
 }
+
+/**
+* @function hideGeocoding
+* hides the inputs and buttons needed for setting the position via coordinates
+*/
 function hideGeocoding(){
   document.getElementById("adress").style="display:none";
   document.getElementById("adressString").style="display:none";
@@ -136,6 +151,10 @@ function hideGeocoding(){
   document.getElementById("stationMap").style="display:none";
 }
 
+/**
+* @function showGeocoding
+* displays the (hidden) inputs and buttons needed for setting the position via Geocoding
+*/
 function showGeocoding(){
   hideCoordinates();
   document.getElementById("footerGeofields").style="";
@@ -146,6 +165,10 @@ function showGeocoding(){
   document.getElementById("adressString").style="";
 }
 
+/**
+* @function startGeocoding
+* takes the adress and key, makes a Geocodingrequest and displays the following steps
+*/
 function startGeocoding(){
   var geocodingkey = document.getElementById("geocodingkeyinput").value;
   var adressString = document.getElementById("adress").value;
@@ -155,8 +178,11 @@ function startGeocoding(){
 
 
 /**
+* @function startGeocoding
+* @param geocodingkey the key for LocationIQ API
+* @param adressString  the adress send to the API
+* @return the geocoded adress as coordinates in GeoJSON
 * get your own key here: "https://locationiq.com/geocoding"
-*
 */
 function geocoding(geocodingkey,adressString)
 {
@@ -175,6 +201,10 @@ function geocoding(geocodingkey,adressString)
   }
 }
 
+/**
+* @function showGeocoding
+* displays the (hidden) inputs and buttons needed for setting the position via coordinates
+*/
 function showCoordinates(){
   hideGeocoding();
   document.getElementById("footerGeofields").style="";
@@ -183,12 +213,15 @@ function showCoordinates(){
   document.getElementById("coordinatesButton").style="";
 }
 
+/**
+* @function coordinates
+* @return the position in GeoJSON
+* sets the user position via given coordinates
+*/
 function coordinates(){
   position = toGeoJSONPoint( JSON.parse( "[" + document.getElementById("coordinatesInput").value + "]"));
   showGo();
-
   return position;
-
 }
 
 /**
@@ -198,7 +231,6 @@ function coordinates(){
 * @param temp - An array with the busstops as GeoJSONObject sorted by the distance to the point point_modified
 * @return An GeoJSONObject sorted by the distance
 */
-
 function getBusstops(location)
 {
   //var key = "";  //insert your here transport api key here, if you do not want to insert it every time...
@@ -211,91 +243,67 @@ function getBusstops(location)
 }
 
 
-
+/**
+* @function showTable
+* displays the table and hides unnecassary checkboxes and lines
+*/
 function showTable(id,storage){
 document.getElementById("tableID").style="width:100%";
 document.getElementById("tableContainer").style="width:100%";
-
+//hide unnecassary stuff
 for(var j=0;j<5;j++){
   document.getElementById("myCheck"+j).style="display:none";
   document.getElementById("label"+j).style="display:none";
   document.getElementById(""+j).style="display:none";
 }
-
-
-
-
-
-
-for(var i=0;i<stationDepartures.boards[storage].departures.length;i++){
-  document.getElementById("checkboxButton").style="";
-  // document.getElementById("pinfo").style="";
-
-  document.getElementById("myCheck"+i).style="";
-  document.getElementById("label"+i).style="";
-  document.getElementById(""+i).style="";
-  document.getElementById("Line"+JSON.stringify(i)).innerHTML = stationDepartures.boards[storage].departures[i].transport.name;
-  document.getElementById("Type"+JSON.stringify(i)).innerHTML = stationDepartures.boards[storage].departures[i].transport.category;
-  document.getElementById("Destination"+JSON.stringify(i)).innerHTML = stationDepartures.boards[storage].departures[i].transport.headsign;
-  document.getElementById("Date"+JSON.stringify(i)).innerHTML = stationDepartures.boards[storage].departures[i].time;
+//builes the lines and checkboxes
+  for(var i=0;i<stationDepartures.boards[storage].departures.length;i++){
+    document.getElementById("checkboxButton").style="";
+    document.getElementById("myCheck"+i).style="";
+    document.getElementById("label"+i).style="";
+    document.getElementById(""+i).style="";
+    document.getElementById("Line"+JSON.stringify(i)).innerHTML = stationDepartures.boards[storage].departures[i].transport.name;
+    document.getElementById("Type"+JSON.stringify(i)).innerHTML = stationDepartures.boards[storage].departures[i].transport.category;
+    document.getElementById("Destination"+JSON.stringify(i)).innerHTML = stationDepartures.boards[storage].departures[i].transport.headsign;
+    document.getElementById("Date"+JSON.stringify(i)).innerHTML = stationDepartures.boards[storage].departures[i].time;
+  }
 }
-}
-
-
+//onclick function
 var table = document.getElementById("tableID");
 if (table != null) {
     for (var i = 0; i < table.rows.length; i++) {
-        // for (var j = 0; j < table.rows[i].cells.length; j++)
-        // table.rows[i].cells[j].onclick = function () {
             table.rows[i].onclick = function () {
             tableText(this);
         };
     }
 }
-
+/**
+*@function tableText checks/ unchecks the checkbox when click on the row
+*@param row the row for the onclick action
+*/
 function tableText(row) {
   if( document.getElementById("myCheck"+row.id).checked!=true){
   document.getElementById("myCheck"+row.id).checked=true;
-}
-else{
-  document.getElementById("myCheck"+row.id).checked=false;
-}
+  }
+  else{
+    document.getElementById("myCheck"+row.id).checked=false;
+  }
 }
 
 
-
+/**
+*@function checkcheckboxes saves marked tours
+*/
 async function checkcheckboxes(){
-  // var a=0; //Anzahl gespeicherter Touren
-  // var b=0; //
-// var risk=Boolean(true);
+
   var risk=Boolean(false);
-for(var i=0;i<5;i++){
+  for(var i=0;i<5;i++){
     if(document.getElementById("myCheck"+i).checked==true){
-      // b++;
-      if(await addTour(station,i,risk)==true){
-        // a++;
-          alert("Tour nr.: "+(i+1)+" saved");
-      }
-      else{
-          alert("Tour nr.: "+(i+1)+" could not be saved or was already saved");
-      }
+      if(await addTour(station,i,risk)==true)alert("Tour nr.: "+(i+1)+" saved");
+      else alert("Tour nr.: "+(i+1)+" could not be saved or was already saved");
     }
   }
-  // if (b==0){
-  //   alert("No tour chosen. Click on a fcking checkbox");
-  // }
-  // if (a==1){
-  //   alert("Tour saved");
-  // }
-  // if (a>1){
-  //   alert(a+" Tours saved");
-  // }
 }
-
-
-
-
-
 
 
 
@@ -304,7 +312,6 @@ for(var i=0;i<5;i++){
 * @param newGeopoint - The point as GeoJSON
 * @return newGeopoint - The point as GeoJSON point
 */
-
 function toGeoJSONPoint(coordinatesPoint)
 {
 	var newGeopoint =
@@ -320,21 +327,24 @@ function toGeoJSONPoint(coordinatesPoint)
 	return newGeopoint;
 }
 
-
+/**
+* @function changeToView changes the windowslocation to the viewpage
+*/
 function changeToView(){
 window.location = "http://localhost:3000/public/lastTours.html";
 }
 
 
-
-////////////////////////////////////////ServerStuff//////////////////////////////////////
-
 /**
+ *  @function addTour creates a tourobject by given parameters and sends it to the db
+ *  @param station the position the station has in stationDepartures
+ *  @param id the position the tour has in station.boards
+ *  @param risk the risk for this tour
  * ´@desc Send Files in textarea to Server to store them
  */
-
 async function addTour(station,id,risk) //Position von Station und der entsprechenden Abfahrt in Station Departure[]
 {
+  //create object
     var input = {
       "tourId": stationDepartures.boards[station].departures[id].transport.name+
                 stationDepartures.boards[station].departures[id].transport.headsign+
@@ -356,10 +366,11 @@ async function addTour(station,id,risk) //Position von Station und der entsprech
         },
         "type":stationDepartures.boards[station].place.type
       }]};
-
+//check if tour already saved
 var temp = await checkTour(input.tourId);
     if(temp==false){
       try{
+        //send it to the db
         await tourPostRequest(input);
         return true;
       }
@@ -379,8 +390,9 @@ var temp = await checkTour(input.tourId);
 
 
 /**
-* Ist die Tour schon in der Datenbank gespeichert
-*
+* @function checkTour checks if a tour is already saved in the db
+* @return true if tour already saved or an error occures
+* @return false if tour is not saved yet
 **/
 async function checkTour(id){
   var temp = await tourDbSearchTourId((id));

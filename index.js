@@ -6,35 +6,37 @@ const app = express();
 app.use (express.json());
 app.use (express.urlencoded({extended: true}));
 
+/**
+* Connects to the mongodb itemdb and creates the collections tour and customer
+*/
 async function connectMongoDB ()
 {
     try
 	{
         app.locals.dbConnection = await mongodb.MongoClient.connect("mongodb://localhost:27017", {useNewUrlParser: true});
         app.locals.db = await app.locals.dbConnection.db("itemdb");
-        app.locals.db.createCollection("customer", function(err, res) 
+        app.locals.db.createCollection("customer", function(err, res)
 		{
 			console.log("Collection customer created!");
         });
-        app.locals.db.createCollection("tour", function(err, res) 
+        app.locals.db.createCollection("tour", function(err, res)
 		{
 			console.log("Collection tour created!");
         });
-
         console.log("Using db: " + app.locals.db.databaseName);
-        
+
 		// Clear collections
         // app.locals.db.collection("tour").drop( (err,delOK) => {if(delOK) console.log("collection tour cleared");});
         // app.locals.db.collection("customer").drop( (err,delOK) => {if(delOK) console.log("collection customer cleared");});
     }
     catch (error)
-	{
-        console.dir(error);
-        setTimeout(connectMongoDB, 3000);
+	  {
+      console.dir(error);
+      setTimeout(connectMongoDB, 3000);
     }
 }
 
-connectMongoDB ();
+connectMongoDB();
 
 app.use('/public', express.static(__dirname + '/public'));
 app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist'));
@@ -57,6 +59,9 @@ app.post("/customer", (req, res) =>
 	});
 });
 
+/**
+* Adresspoint for GET-requests directed to customer collection
+*/
 app.get("/customer", (req,res) =>
 {
 	if (req.query.password == "")
@@ -67,7 +72,7 @@ app.get("/customer", (req,res) =>
 	{
 		var object = {username : req.query.username, password: req.query.password};
 	}
-	
+
 	// If the admin logs in there will be shown all users in the db at the server
 	if (req.query.username == "admin" && req.query.password == "admin")
 	{
@@ -95,6 +100,9 @@ app.get("/customer", (req,res) =>
     }
 });
 
+/**
+* Adresspoint for Delete-requests directed to customer collection
+*/
 app.delete("/customer", (req, res) =>
 {
 	// Here can an user be deleted by his username
@@ -113,6 +121,9 @@ app.delete("/customer", (req, res) =>
     });
 });
 
+/**
+* Adresspoint for GET-requests directed to tour collection
+*/
 app.get("/tour", (req,res) =>
 {
 	var object = {};
@@ -123,7 +134,7 @@ app.get("/tour", (req,res) =>
 		if (decodeURIComponent(req.query.username) == "undefined")
 		{
 			// Else the object is defined with the line, the destination, the date and the category
-            object = 
+            object =
 			{
 				"line" : decodeURIComponent(req.query.line),
                 "destination" : decodeURIComponent(req.query.destination),
@@ -140,24 +151,26 @@ app.get("/tour", (req,res) =>
 			{
 				object = {"username" : decodeURIComponent(req.query.username)};
 			}
-		}
-    }
-    else
-    {
-		object = {"tourId" : (req.query.tourId)};
-    }
+  		}
+      }
+      else
+      {
+  		object = {"tourId" : (req.query.tourId)};
+      }
+  	app.locals.db.collection('tour').find(object).toArray((error, result) =>
+  	{
+  		//All objects from the tour collection which fit at the chosen object will be returned
+  		if (error)
+  		{
+  			console.dir(error);
+  		}
+  		res.json(result);
+  	});
+  });
 
-	app.locals.db.collection('tour').find(object).toArray((error, result) =>
-	{
-		//All objects from the tour collection which fit at the chosen object will be returned
-		if (error)
-		{
-			console.dir(error);
-		}
-		res.json(result);
-	});
-});
-
+  /**
+  * Adresspoint for POST-requests directed to tour collection
+  */
 app.post("/tour", (req, res) =>
 {
     app.locals.db.collection('tour').insertOne(req.body, (error, result) =>
@@ -171,10 +184,13 @@ app.post("/tour", (req, res) =>
     });
 });
 
+/**
+* Adresspoint for delete-requests directed to tour collection
+*/
 app.delete("/tour", (req, res) =>
 {
 	var object = {tourId : decodeURIComponent(req.body.tourId)};
-    app.locals.db.collection('tour').deleteOne(object, (error, result) => 
+    app.locals.db.collection('tour').deleteOne(object, (error, result) =>
 	{
 		if (error)
 		{
