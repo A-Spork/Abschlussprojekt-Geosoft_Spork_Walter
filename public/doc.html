@@ -13,8 +13,8 @@ Matr. - Nr.: 459 762, 460 137 -->
 <link rel = "stylesheet" href = "https://unpkg.com/leaflet/dist/leaflet.css"/>
 <link rel = "stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <link rel = "stylesheet" href = "https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
-   integrity = "sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-   crossorigin = "" #mapid {height: 180px;}/>
+	integrity = "sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+	crossorigin = "" #mapid {height: 180px;}/>
 <link rel = "stylesheet" href = "style.css">
 </head>
 
@@ -38,13 +38,15 @@ Matr. - Nr.: 459 762, 460 137 -->
 </nav>
 
 <div class = "jumbotron text-center">
-    <h1> The Docpage</h1>
+    <h1>The Docpage</h1>
     <p>At this website a doctor can choose a user and a period and can mark the tours of a user for risk</p>
 </div>
 
 <div class = "container-fluid bg-cyanlight">
     <div class = "row">
-        <div class = "panel panel-default text-center">
+        
+		<!-- The inputs of the username, the start - and the enddate -->
+		<div class = "panel panel-default text-center">
             <div class = "panel-heading">
                 <h2>The Inputs</h2>
 				<p>Here you can insert an username and a period with start - and enddate.</p>
@@ -52,22 +54,13 @@ Matr. - Nr.: 459 762, 460 137 -->
             <div class = "panel-body">
                 <form class = "form-inline">
                     <div class = "form-group">
-                        <textarea class = "form-control" id = "username" cols = "100">Insert the patient´s username</textarea>
+						<p>Insert the patient´s username</p>
+                        <input class = "form-control" id = "username" cols = "100"></input>
                         <p></p>
-						<textarea class = "form-control" id = "startDate" cols = "100">Insert the startdate</textarea>
-						<textarea class = "form-control" id = "endDate" cols = "100">Insert the enddate</textarea>
+						<p>Insert the start - (left) and the enddate (right)</p>
+						<input class = "form-control" id = "startDate" cols = "100"></input>
+						<input class = "form-control" id = "endDate" cols = "100"></input>
 						<p></p>
-						<p>
-							Accepted formats for the dates:<br>
-							- empty => no restriction <br>
-							- unix timecode<br>
-							- ECMAScript 5 ISO-8601 Format + timezone
-						</p>
-						<p>
-							An example for ECMAScript 5 ISO-8601 format + timezone:<br>
-							2020-08-26T14:32:00+02:00<br>
-							YYYY-MM-DDTHH:MM:SS+tt:00
-						</p>
                     </div>
                     <p></p>
                     <div class = "input-group-btn">
@@ -75,22 +68,49 @@ Matr. - Nr.: 459 762, 460 137 -->
                     </div>
                 </form>
             </div>
+			
+			<!-- External information for the inputs -->
+			<div class = "panel-footer">
+				<form class = "form-inline">
+					<div class = "form-group">
+						<div class = "input-group-btn">
+							<button type = "button" class = "btn btn-info" onclick = "exampleDateformat();">Show accepted formats for the dates</button>
+							<button type = "button" class = "btn btn-info" onclick = "exampleTimeformat();">Show an example for ECMAScript 5 ISO-8601</button>
+						</div>
+						<p id = "dateFormatString" style = "display: none">Accepted formats for the dates:<p>
+						<ul id = "dateFormatList" style = "display: none">
+							<li>empty => no restriction</li>
+							<li>unix timecode</li>
+							<li>ECMAScript 5 ISO-8601 Format + timezone</li>
+						</ul>
+						<p></p>
+						<p id = "timeFormatString" style = "display: none">An example for ECMAScript 5 ISO-8601 format + timezone:</p>
+						<ul id = "timeFormatList" style = "display: none">	
+							<li>2020-08-26T14:32:00+02:00</li>
+							<li>YYYY-MM-DDTHH:MM:SS+tt:00</li>
+						</ul>
+					</div>
+				</form>
+			</div>
 		</div>
-		<div class = "panel panel-default text-center" id = "docMap" style = "display:none">
+		
+		<!-- The map -->
+		<div class = "panel panel-default text-center" id = "docMap" style = "display: none">
 			<div class = "panel-heading">
 				<h2>The Map with the last tours</h2>
 				<p>Here you can see the stations where the last tours of the patient had startet.</p>
 			</div>
             <div class = "panel-body">
 				<div id = "main" style = "overflow: auto;"></div>
-        <div class = "center-block" id = "mapSection" style = "width: 90%; height: 500px; float: align;"></div>
-
+				<div class = "center-block" id = "mapSection" style = "width: 90%; height: 500px; float: align;"></div>
 				<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 				<link rel = "stylesheet" href = "http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css"/>
 				<script src = "http://cdn.leafletjs.com/leaflet/v1.5.1/leaflet.js"></script>
 			</div>
 		</div>
-		<div class = "panel panel-default text-center" id = "docButtons" style="display:none">
+		
+		<!-- The possibilities to mark a tour -->
+		<div class = "panel panel-default text-center" id = "docButtons" style = "display: none">
 			<div class = "panel-heading">
 				<h2>The buttons to mark the tours</h2>
 				<p>Here you can mark or clear a single or all tours at the same time.</p>
@@ -98,13 +118,41 @@ Matr. - Nr.: 459 762, 460 137 -->
             <div class = "panel-body">
 				<form class = "form-inline">
                     <div class = "form-group">
-						<textarea class = "form-control" id = "tour" cols = "100">Insert the tourId here</textarea>
+						<p>Insert the tourId here</p>
+						<input class = "form-control" id = "tour" cols = "100"></input>
 					</div>
-					<div class = "input-group-btn">
-						<button type = "button" class = "btn btn-info" onclick = "markSingle();">Mark a single tour over the tourId</button>
-						<button type = "button" class = "btn btn-info" onclick = "clearSingle();">Clear a single tour over the TourId</button>
-						<button type = "button" class = "btn btn-info" onclick = "markAll();">Mark all displayed tours</button>
-						<button type = "button" class = "btn btn-info" onclick = "clearAll();">Clear all displayed tours</button>
+					<p></p>
+					<button type = "button" class = "btn btn-info" onclick = "markSingle();">Mark a single tour over the tourId</button>
+					<button type = "button" class = "btn btn-info" onclick = "clearSingle();">Clear a single tour over the TourId</button>
+					<p></p>
+					<button type = "button" class = "btn btn-info" onclick = "markAll();">Mark all displayed tours</button>
+					<button type = "button" class = "btn btn-info" onclick = "clearAll();">Clear all displayed tours</button>
+				</form>
+			</div>
+		</div>
+		
+		<!-- The table with the tours -->
+		<div class = "panel panel-default text-center" id = "docTableContainer" style = "display: none">
+			<div class = "panel-heading">
+				<h2>Last tours of the chosen user</h2>
+				<p>Here you can see the tours of the chosen user with the risk and the tourId.</p>
+			</div>
+            <div class = "panel-body">
+				<form class = "form-inline">
+					<div style = "overflow-x: auto;">
+						<table class = "table table-bordered table-striped text-center" id = "docTable">
+							<thead>
+								<tr>
+									<th>Date</th>
+									<th>Departure</th>
+									<th>Destination</th>
+									<th>Line</th>
+									<th>Contact to an infected person</th>
+									<th>TourId</th>
+								</tr>
+							</thead>
+							<tbody id = "lastToursBodyDoc"></tbody>
+						</table>
 					</div>
 				</form>
 			</div>
@@ -112,30 +160,11 @@ Matr. - Nr.: 459 762, 460 137 -->
 	</div>
 </div>
 
-<div class = "container-fluid text-center bg-cyanlight" id = "docTableContainer" style = "display: none">
-    <h2>Last tours of the chosen user</h2>
-    <div style = "overflow-x: auto;">
-        <table class = "table table-bordered table-striped text-center" id = "docTable">
-            <thead>
-                <tr>
-                    <th>Date</th>
-					<th>Departure</th>
-					<th>Destination</th>
-					<th>Line</th>
-					<th>Contact to an infected person</th>
-					<th>TourId</th>
-                </tr>
-            </thead>
-            <tbody id = "lastToursBodyDoc"> </tbody>
-        </table>
-    </div>
-</div>
-
 <footer class = "container-fluid text-center">
 	<a href = "#myPage" title = "To Top">
 		<span class = "glyphicon glyphicon-chevron-up"></span>
 	</a>
-	<p>Made by Adrian Spork and Tatjana Walter in 2020</p>
+	<p>Made by Adrian Spork and Jana Walter in 2020</p>
 	<p>This website was made for a project in the course Geosoftware at the WWU Muenster<p>
 </footer>
 
@@ -145,6 +174,5 @@ Matr. - Nr.: 459 762, 460 137 -->
 <script src = "geoJSON.js"></script>
 <script src = "/jquery/jquery.min.js"></script>
 <script src = "doc.js"></script>
-
 </body>
 </html>

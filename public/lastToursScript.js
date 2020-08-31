@@ -14,14 +14,15 @@ async function main(){
 	username = getCookie("username");
 	tours = await tourDbSearchUsername(username);
 	await getLocation();
-	//
-	// await showMap();
-	// showTable()
 }
 
 async function main2(){
-		await showMap();
-		showTable();
+		var temp = await showMap();
+		if (temp != (-1))
+		{
+			document.getElementById("mapLastTours").style = "";
+			showTable();
+		}
 }
 
 
@@ -35,7 +36,7 @@ function showMap()
 {
 	if(tours.length==0) {
 		alert("No Tour to display");
-		return;
+		return (-1);
 	}
 
 
