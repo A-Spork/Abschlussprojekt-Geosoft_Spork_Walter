@@ -48,6 +48,7 @@ app.get('/', (req, res) => {res.sendFile(__dirname + '/public/test.html');});
 
 app.post("/customer", (req, res) =>
 {
+  res.set('access-control-allow-origin',['*']);
 	app.locals.db.collection('customer').insertOne(req.body, (error, result) =>
 	{
 		if(error)
@@ -66,6 +67,7 @@ app.post("/customer", (req, res) =>
 
 app.get("/customer", (req,res) =>
 {
+  res.set('access-control-allow-origin',['*']);
 	if(req.query.password == "")
 	{
 		var object = {username : req.query.username};
@@ -74,19 +76,16 @@ app.get("/customer", (req,res) =>
 	{
 		var object = {username : req.query.username, password: req.query.password};
 	}
-
 	// If the admin logs in there will be shown all users in the db at the server
 	if(req.query.username == "admin" && req.query.password == "admin")
 	{
 		app.locals.db.collection('customer').find({}).toArray((error, result) =>
 		{
-			console.log("admin logged in");
 			if(error)
 			{
 				console.dir(error);
 			}
 			res.json(result);
-			console.log(result);
 		});
     }
 	else
@@ -109,6 +108,7 @@ app.get("/customer", (req,res) =>
 
 app.delete("/customer", (req, res) =>
 {
+  res.set('access-control-allow-origin',['*']);
 	// Here can an user be deleted by his username
     var object = {username : req.body.username};
     app.locals.db.collection('customer').deleteOne(object, (error, result) =>
@@ -132,6 +132,7 @@ app.delete("/customer", (req, res) =>
 
 app.get("/tour", (req,res) =>
 {
+  res.set('access-control-allow-origin',['*']);
 	var object = {};
 	// If the tourId is defined, the object is the tourId
     if(decodeURIComponent(req.query.tourId) == "undefined")
@@ -181,6 +182,7 @@ app.get("/tour", (req,res) =>
 
 app.post("/tour", (req, res) =>
 {
+  res.set('access-control-allow-origin',['*']);
     app.locals.db.collection('tour').insertOne(req.body, (error, result) =>
 	{
         if(error)
@@ -199,6 +201,7 @@ app.post("/tour", (req, res) =>
 
 app.delete("/tour", (req, res) =>
 {
+  res.set('access-control-allow-origin',['*']);
 	var object = {tourId : decodeURIComponent(req.body.tourId)};
     app.locals.db.collection('tour').deleteOne(object, (error, result) =>
 	{

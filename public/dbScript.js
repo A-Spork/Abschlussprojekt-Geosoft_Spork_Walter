@@ -37,16 +37,15 @@ async function customerPostRequest(dat)
 
 async function customerGetRequestUsername(query)
 {
-    return new Promise(function(res, rej)
-	{
-        $.ajax
-		({
-			url: "/customer" + "?username=" + encodeURIComponent(query.username) + "&" + "password" + "=" + encodeURIComponent(query.password),
-            type: "get",
-            success: function(result) {res(result);},
-            error: function(err) {console.log(err);}
-        });
-    });
+  var temp =  new Promise(function(res, rej){
+      $.ajax({
+          url: "/customer" +"?username="+encodeURIComponent(query.username)+"&"+ "password"+"="+encodeURIComponent(query.password),
+          type: "get",
+          success: function(result){res(result);  return result;},
+          error: function(err){console.log(err); return result;}
+      });
+  });
+  return await temp;
 }
 
 
@@ -63,7 +62,7 @@ async function customerDbSearchUsernamePassword(username, password)
 	// If the password is not overgiven, the user will be searched by the username
 	if(password == "")
 	{
-		var query = 
+		var query =
 		{
 			"username": username,
 			"password": ""
@@ -71,7 +70,7 @@ async function customerDbSearchUsernamePassword(username, password)
 	}
 	else
 	{
-		var query = 
+		var query =
 		{
 			"username": username,
 			"password": password
@@ -139,7 +138,7 @@ async function tourPostRequest(dat)
 
 function tourGetRequestUsername(query)
 {
-	// The username has to be encoded so that it can be given correct to the server 
+	// The username has to be encoded so that it can be given correct to the server
 	var encodedUsername = encodeURIComponent(query.username);
     return new Promise(function(res, rej)
 	{
@@ -244,7 +243,7 @@ async function tourDbSearchUsername(username)
 /**
 * @function deleteTour - Deletes files of the customer stored in Database searched by the tourId
 * @param tourId - The tourId to use for the query
-* @var object - The data for the query 
+* @var object - The data for the query
 */
 
 async function deleteTour(tourId)

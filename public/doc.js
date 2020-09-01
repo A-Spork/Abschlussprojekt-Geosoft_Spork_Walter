@@ -67,7 +67,7 @@ async function main()
 
 function showMap()
 {
-	if(tours.length == 0) 
+	if(tours.length == 0)
 	{
 		alert("No Tour to display");
 		var temp = (-1);
@@ -226,7 +226,7 @@ function timefilter()
 		{
 			start = getUnix(start);
 		}
-		else 
+		else
 		{
 			start = JSON.parse(start);
 		}
@@ -241,7 +241,7 @@ function timefilter()
 		{
 			end = getUnix(end);
 		}
-		else 
+		else
 		{
 			end = JSON.parse(end);
 		}
@@ -306,7 +306,7 @@ function getTime(unix)
 	var month = date.getMonth();
 	var day = date.getDate();
 	var formattedTime = day + '.' + (month+1) + '.' + year + ', ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-	var time = 
+	var time =
 	{
 		year: year,
 		month: (month + 1),
@@ -324,7 +324,7 @@ function getTime(unix)
 * @function getUnix - Calculates a timestring in ECMAScript 5 ISO-8601 Format + timezone into unixseconds
 * @param timestring - Time in ECMAScript 5 ISO-8601 Format + timezone (e.g.: 2020-08-26T17:02:00+02:00)
 * @var timezone - Extracts the timzone from the timestring
-* @var unix - The time in unixseconds 
+* @var unix - The time in unixseconds
 * @return unix - Time in unixseconds
 */
 
@@ -340,37 +340,30 @@ function getUnix(timestring)
 * @function markSingle - Marks a single tour as risky by its tourId
 * @var id - The tourId for the tour which should be marked
 */
-
-function markSingle()
-{
-	var id = document.getElementById("tour").value;
-	for(var i = 0; i < tours.length; i++)
-	{
-		if(id == tours[i].tourId)
-		{
-			mark(i);
-			alert("Tour marked");
-			location.reload();
-			return;
-		}
-	}
-	alert("TourId not valid");
+async function markSingle(){
+  var id = document.getElementById("tour").value;
+  for(var i=0;i<tours.length;i++){
+    if(id==tours[i].tourId){
+        await mark(i);
+       alert("Tour marked");
+       location.reload();
+      return;
+    }
+  }
+  alert("TourId not valid");
 }
 
 
 /**
 * @function markAll - Marks all displayed tours as risky
 */
-
-function markAll()
-{
-	for(var i = 0; i < tours.length; i++)
-	{
-		mark(i);
-	}
-	alert("All Tours marked");
-	location.reload();
-	return;
+ async function markAll(){
+  for(var i=0;i<tours.length;i++){
+  await mark(i);
+  }
+  alert("All Tours marked");
+  location.reload();
+  return;
 }
 
 
@@ -378,16 +371,13 @@ function markAll()
 * @function mark - Marks the tour at position i as risky if it is false
 * @param i - The position in the tours - array
 */
-
-function mark(i)
-{
-	if(tours[i].risk == "true")
-	{
-		return;
-	}
-	tourDbUpdate(i, true);
-	contact(tours[i]);
-	return;
+async function mark(i){
+  if(tours[i].risk=="true"){
+    return;
+  }
+  await  tourDbUpdate(i,true);
+  await contact(tours[i]);
+return;
 }
 
 
@@ -395,38 +385,31 @@ function mark(i)
 * @function clearSingle - Clears the risk of a single tour by its tourId
 * @var id - The tourId for the tour which should be marked
 */
-
-function clearSingle()
-{
-	var id = document.getElementById("tour").value;
-	for(var i = 0; i < tours.length; i++)
-	{
-		if(id == tours[i].tourId)
-		{
-			clear(i);
-			alert("Tour cleared");
-			location.reload();
-			return;
-		}
-	}
-	alert("TourId not valid");
-	return;
+async function clearSingle(){
+  var id = document.getElementById("tour").value;
+  for(var i=0;i<tours.length;i++){
+    if(id==tours[i].tourId){
+      await clear(i);
+      alert("Tour cleared");
+      location.reload();
+      return;
+    }
+  }
+  alert("TourId not valid");
+  return;
 }
 
 
 /**
 * @function clearAll - Clears the risk of all displayed tours
 */
-
-function clearAll()
-{
-	for(var i = 0; i < tours.length; i++)
-	{
-		clear(i);
-	}
-	alert("All Tours cleared");
-	location.reload();
-	return;
+ async function clearAll(){
+  for(var i=0;i<tours.length;i++){
+    await clear(i);
+  }
+  alert("All Tours cleared");
+  location.reload();
+  return;
 }
 
 
@@ -434,15 +417,12 @@ function clearAll()
 * @function clear - Clears a single tour´s risk by its position in the tours - array
 * @param i - The position in the tours - array
 */
-
-function clear(i)
-{
-	if(tours[i].risk == "false")
-	{
-		return;
-	}
-	tourDbUpdate(i, false);
-	return;
+async function clear(i){
+  if(tours[i].risk=="false"){
+    return;
+  }
+  await tourDbUpdate(i,false);
+  return;
 }
 
 
@@ -453,39 +433,33 @@ function clear(i)
 * @var input - The tour with the updatet risk
 * @var temp - The customer with the updatet message
 */
-
-async function contact(tour)
-{
-	var matches = await tourGetRequestMatch(tour.line, tour.destination, tour.place, tour.date, tour.category);
-	for(var i = 0; i < matches.length; i++)
-	{
-		if(matches[i].risk == "false")
-		{
-			// Update the tour by deleting and adding it again with different parameters
-			deleteTour(matches[i].tourId);
-			var input = 
-			{
-				"tourId": matches[i].tourId,
-				"category": matches[i].category,
-				"line": matches[i].line,
-				"destination": matches[i].destination,
-				"date": matches[i].date,
-				"risk": JSON.parse(true),
-				"username": matches[i].username,
-				"place": matches[i].place
-			};
-			try
-			{
-				await tourPostRequest(input);
-			}
-			catch(e)
-			{
-				console.log("PostRequest broke");
-			}
-		}
-		var temp = await customerDbSearchUsernamePassword(matches[i].username, "");
-		customerDbUpdate(matches[i].username, temp[0].password, true);
-	}
+async function contact(tour){
+  var matches = await tourGetRequestMatch(tour.line, tour.destination, tour.place, tour.date, tour.category);
+  for(var i = 0; i<matches.length;i++){
+    if(matches[i].risk == "false"){
+//update the tour by deleting and adding it again with different parameters
+      deleteTour(matches[i].tourId);
+      var input = {
+        "tourId": matches[i].tourId,
+        "category":matches[i].category,
+        "line": matches[i].line,
+        "destination": matches[i].destination,
+        "date": matches[i].date,
+        "risk": JSON.parse(true),
+        "username": matches[i].username,
+        "place":matches[i].place
+      };
+        try{
+          await tourPostRequest(input);
+        }
+        catch(e){
+          console.log("PostRequest broke");
+        }
+    console.log("update User");
+    var temp = await customerDbSearchUsernamePassword( matches[i].username,"");
+    customerDbUpdate(matches[i].username,temp[0].password,true);
+  }
+}
 }
 
 
@@ -501,7 +475,7 @@ async function contact(tour)
 async function tourDbUpdate(i,risk)
 {
 	deleteTour(tours[i].tourId);
-	var input = 
+	var input =
 	{
 		"tourId": tours[i].tourId,
 		"category":tours[i].category,
