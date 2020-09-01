@@ -270,11 +270,11 @@ return unix;
 /**
 * @function markSingle marks a single tour as risky by its tourId
 */
-function markSingle(){
+async function markSingle(){
   var id = document.getElementById("tour").value;
   for(var i=0;i<tours.length;i++){
     if(id==tours[i].tourId){
-       mark(i);
+        await mark(i);
        alert("Tour marked");
        location.reload();
       return;
@@ -287,9 +287,9 @@ function markSingle(){
 /**
 * @function markAll marks all displayed tours as risky
 */
- function markAll(){
+ async function markAll(){
   for(var i=0;i<tours.length;i++){
-   mark(i);
+  await mark(i);
   }
   alert("All Tours marked");
   location.reload();
@@ -301,12 +301,12 @@ function markSingle(){
 * @function mark marks the tour at position i as risky
 * @param i the position in the toursarray
 */
-function mark(i){
+async function mark(i){
   if(tours[i].risk=="true"){
     return;
   }
-  tourDbUpdate(i,true);
-  contact(tours[i]);
+  await  tourDbUpdate(i,true);
+  await contact(tours[i]);
 return;
 }
 
@@ -314,11 +314,11 @@ return;
 /**
 * @function clearSingle clears the risk of a single tour by it tourId
 */
-function clearSingle(){
+async function clearSingle(){
   var id = document.getElementById("tour").value;
   for(var i=0;i<tours.length;i++){
     if(id==tours[i].tourId){
-      clear(i);
+      await clear(i);
       alert("Tour cleared");
       location.reload();
       return;
@@ -333,9 +333,9 @@ function clearSingle(){
 * @function clearAll clears all displayed tours´ risk
 *
 */
- function clearAll(){
+ async function clearAll(){
   for(var i=0;i<tours.length;i++){
-    clear(i);
+    await clear(i);
   }
   alert("All Tours cleared");
   location.reload();
@@ -347,11 +347,11 @@ function clearSingle(){
 * @function clear clears a single tpur´s risk by its position in the toursarray
 * @param i the position in the toursarray
 */
-function clear(i){
+async function clear(i){
   if(tours[i].risk=="false"){
     return;
   }
-  tourDbUpdate(i,false);
+  await tourDbUpdate(i,false);
   return;
 }
 
@@ -364,7 +364,7 @@ async function contact(tour){
   var matches = await tourGetRequestMatch(tour.line, tour.destination, tour.place, tour.date, tour.category);
   for(var i = 0; i<matches.length;i++){
     if(matches[i].risk == "false"){
-//update the tour by deleting and adding it again with differentz parameters
+//update the tour by deleting and adding it again with different parameters
       deleteTour(matches[i].tourId);
       var input = {
         "tourId": matches[i].tourId,
@@ -382,10 +382,11 @@ async function contact(tour){
         catch(e){
           console.log("PostRequest broke");
         }
-    }
-  var temp = await( customerDbSearchUsernamePassword( matches[i].username,""));
-  customerDbUpdate(matches[i].username,temp[0].password,true);
+    console.log("update User");
+    var temp = await customerDbSearchUsernamePassword( matches[i].username,"");
+    customerDbUpdate(matches[i].username,temp[0].password,true);
   }
+}
 }
 
 /**

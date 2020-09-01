@@ -37,16 +37,17 @@ async function customerPostRequest(dat)
 
 async  function customerGetRequestUsername(query)
 {
-    return new Promise(function(res, rej){
-        $.ajax({
-            url: "/customer" +"?username="+encodeURIComponent(query.username)+"&"+ "password"+"="+encodeURIComponent(query.password),
-            type: "get",
-
-            success: function(result){res(result);},
-            error: function(err){console.log(err);}
-        });
-    });
+  var temp =  new Promise(function(res, rej){
+      $.ajax({
+          url: "/customer" +"?username="+encodeURIComponent(query.username)+"&"+ "password"+"="+encodeURIComponent(query.password),
+          type: "get",
+          success: function(result){res(result);  return result;},
+          error: function(err){console.log(err); return result;}
+      });
+  });
+  return await temp;
 }
+
 
 /**
  * @desc Shows Files stored in Database
