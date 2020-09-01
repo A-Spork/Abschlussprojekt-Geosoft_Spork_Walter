@@ -14,6 +14,7 @@
 * @var name - The username will be checked and saved in a cookie
 * @var password - The password will be checked and saved in a cookie
 */
+
 async function logIn()
 {
 	var name = document.getElementById("usernameInput").value;
@@ -59,6 +60,7 @@ async function logIn()
 * @var name - The username will be checked and saved in a cookie
 * @var password - The password will be checked and saved in a cookie
 */
+
 async function signIn()
 {
     var name = document.getElementById("usernameInput").value;
@@ -94,7 +96,11 @@ async function signIn()
 * @function checkUser - Checks if the username and the password is already in the db
 * @param username - The username to check
 * @param password - The password to check
+* @var temp - The answer of the db - request
+* @return false - If the user is not in the db
+* @return true - If the user is in the db
 */
+
 async function checkUser(username, password)
 {
     var temp = await customerDbSearchUsernamePassword(username, password);
@@ -112,7 +118,10 @@ async function checkUser(username, password)
 /**
 * @function checkUser - Checks if the username is supported
 * @param username - The username to check
+* @return false - If the name is not supported
+* @return true - If the name is supported
 */
+
 function checkName(username)
 {
 	if(username == "" || username == " " || username == "  " || username == "   " || username == "    " || username == "     "
@@ -136,7 +145,10 @@ function checkName(username)
 * @param password - The overgiven password
 * @param message - The overgiven message
 * @var input - The inputobject for the db
+* @return true - If the request was successful
+* @return false - If the request runs in an error
 */
+
 async function createNewCustomer(username, password, message)
 {
     var input =
@@ -165,6 +177,7 @@ async function createNewCustomer(username, password, message)
 * @param password - The password of the user
 * @param message - The message of the user says if he has a risk to be infected or not
 */
+
 async function customerDbUpdate(username, password, message)
 {
     deleteCustomerUsername(username);
@@ -175,6 +188,7 @@ async function customerDbUpdate(username, password, message)
 /**
 * @logOut - Logs the user out, deletes his cookies and jumps back to the login - page
 */
+
 async function logOut()
 {
 	deleteCookie();
