@@ -30,9 +30,9 @@ async function connectMongoDB()
         // app.locals.db.collection("customer").drop((err,delOK) => {if(delOK) console.log("collection customer cleared");});
     }
     catch(error)
-	  {
-      console.dir(error);
-      setTimeout(connectMongoDB, 3000);
+	{
+		console.dir(error);
+		setTimeout(connectMongoDB, 3000);
     }
 }
 
@@ -60,9 +60,11 @@ app.post("/customer", (req, res) =>
 	});
 });
 
+
 /**
-* Adresspoint for GET-requests directed to customer collection
+* Adresspoint for GET - requests directed to customer collection
 */
+
 app.get("/customer", (req,res) =>
 {
   res.set('access-control-allow-origin',['*']);
@@ -99,9 +101,11 @@ app.get("/customer", (req,res) =>
     }
 });
 
+
 /**
-* Adresspoint for Delete-requests directed to customer collection
+* Adresspoint for DELETE - requests directed to customer collection
 */
+
 app.delete("/customer", (req, res) =>
 {
   res.set('access-control-allow-origin',['*']);
@@ -121,9 +125,11 @@ app.delete("/customer", (req, res) =>
     });
 });
 
+
 /**
-* Adresspoint for GET-requests directed to tour collection
+* Adresspoint for GET - requests directed to tour collection
 */
+
 app.get("/tour", (req,res) =>
 {
   res.set('access-control-allow-origin',['*']);
@@ -156,7 +162,7 @@ app.get("/tour", (req,res) =>
       }
       else
       {
-  		object = {"tourId" : (req.query.tourId)};
+		  object = {"tourId" : (req.query.tourId)};
       }
   	app.locals.db.collection('tour').find(object).toArray((error, result) =>
   	{
@@ -169,9 +175,11 @@ app.get("/tour", (req,res) =>
   	});
   });
 
-  /**
-  * Adresspoint for POST-requests directed to tour collection
-  */
+
+/**
+* Adresspoint for POST - requests directed to tour collection
+*/
+
 app.post("/tour", (req, res) =>
 {
   res.set('access-control-allow-origin',['*']);
@@ -186,9 +194,11 @@ app.post("/tour", (req, res) =>
     });
 });
 
+
 /**
-* Adresspoint for delete-requests directed to tour collection
+* Adresspoint for DELETE - requests directed to tour collection
 */
+
 app.delete("/tour", (req, res) =>
 {
   res.set('access-control-allow-origin',['*']);
@@ -207,4 +217,4 @@ app.delete("/tour", (req, res) =>
 	});
 });
 
-app.listen(port,() => console.log(`Example app listening at http://localhost:${port}`))
+app.listen(port,() => console.log(`Example app listening at http://localhost:${port}`));

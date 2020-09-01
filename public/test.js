@@ -19,7 +19,6 @@ QUnit.test("function test in HTML: function checkNames()", function(assert)
  	assert.ok(checkName(valid1), "Stupid but valid name");
 });
 
-
 QUnit.test("function test in HTML: Geocoding - API", function(assert)
 {
 	// Test the Geolocation - API (LocationIQ)
