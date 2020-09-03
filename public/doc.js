@@ -40,8 +40,8 @@ async function main()
 			alert("No tours for this period available");
 			return;
 		}
-		await showMap();
-		showTable();
+		await showMapDoc();
+		showTableDoc();
 	}
 	else
 	{
@@ -51,7 +51,7 @@ async function main()
 
 
 /**
-* @function showMap - Displays the tours for the saved user into a map. Colours based on the risk of the tour
+* @function showMapDoc - Displays the tours for the saved user into a map. Colours based on the risk of the tour
 * @var map - The map with the view at the coordinates of the chosen startposition
 * @var Empty - The empty layer which shows only the map
 * @var LayerRiskLow - The layer which shows the tours with a low risk
@@ -65,7 +65,7 @@ async function main()
 * @var Layers - The complete layers in the layercontrol
 */
 
-function showMap()
+function showMapDoc()
 {
 	if(tours.length == 0)
 	{
@@ -133,17 +133,17 @@ function showMap()
 		"Tours without contact": LayerRiskLow
 	};
 	L.control.layers(Layers).addTo(map);
-	showTable();
+	showTableDoc();
 	return;
 }
 
 
 /**
-* @function showTable - Builds and diplays the table to show the saved tours. Colours based on risk of the tour
+* @function showTableDoc - Builds and diplays the table to show the saved tours. Colours based on risk of the tour
 * @var out - The content of the table
 */
 
-function showTable()
+function showTableDoc()
 {
 	document.getElementById("docTableContainer").style = "width:100%";
 	var out = "";
@@ -152,7 +152,7 @@ function showTable()
 		if(tours[i].risk == "true")
 		{
 			out += "<tr id = "+"red"+">\n" +
-				"\t\t\t<td id = \"date" + i + "\">" + tours[i].date + "</td>\n" +
+				"\t\t\t<td id = \"date" + i + "\">" + getTime(getUnix(tours[i].date)).formattedTime + "</td>\n" +
 				"\t\t\t<td id = \"departure" + i + "\">" + tours[i].place[0].name + "</td>\n" +
 				"\t\t\t<td id = \"destination" + i + "\">" + tours[i].destination + "</td>\n" +
 				"\t\t\t<td id = \"line" + i + "\">" + tours[i].line + "</td>\n" +
@@ -163,7 +163,7 @@ function showTable()
 		else
 		{
 			out += "<tr id = "+"green"+">\n" +
-				"\t\t\t<td id = \"date" + i + "\">" + tours[i].date + "</td>\n" +
+				"\t\t\t<td id = \"date" + i + "\">" + getTime(getUnix(tours[i].date)).formattedTime + "</td>\n" +
 				"\t\t\t<td id = \"departure" + i + "\">" + tours[i].place[0].name + "</td>\n" +
 				"\t\t\t<td id = \"destination" + i + "\">" + tours[i].destination + "</td>\n" +
 				"\t\t\t<td id = \"line" + i + "\">" + tours[i].line + "</td>\n" +

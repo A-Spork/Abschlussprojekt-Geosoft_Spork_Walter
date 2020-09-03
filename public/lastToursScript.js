@@ -29,22 +29,22 @@ async function main()
 
 /**
 * @function main2 - Another main - function of the website, shows the map and the table with the last tours of the user
-* @var temp - The result of the showMap - function
+* @var temp - The result of the showMapLastTour - function
 */
 
 async function main2()
 {
-	var temp = await showMap();
+	var temp = await showMapLastTour();
 	if (temp != (-1))
 	{
 		document.getElementById("mapLastTours").style = "";
-		showTable();
+		showTableLastTours();
 	}
 }
 
 
 /**
-* @function showMap - Shows the map at the website
+* @function showMapLastTour - Shows the map at the website
 * @var map - The map with the view at the coordinates of the chosen startposition
 * @var Empty - The empty layer which shows only the map
 * @var LayerRiskLow - The layer which shows the tours with a low risk
@@ -59,9 +59,9 @@ async function main2()
 * @return -1 - If there is no tour to display, the map and the table will not been shown
 */
 
-function showMap()
+function showMapLastTour()
 {
-	if(tours.length==0) 
+	if(tours.length==0)
 	{
 		alert("No Tour to display");
 		return (-1);
@@ -73,7 +73,7 @@ function showMap()
 		maxZoom: 18,
 		attribution: 'Leaflet, OpenStreetMapContributors',
 	}).addTo(map);
-	
+
 	var Empty = L.featureGroup();
 	var LayerRiskLow = L.featureGroup();
 	var LayerRiskHigh = L.featureGroup();
@@ -129,27 +129,28 @@ function showMap()
 		"Tours without contact": LayerRiskLow
 	};
 	L.control.layers(Layers).addTo(map);
-	showTable();
+	showTableLastTours();
 	return;
 }
 
 
 /**
-* @function showTable - Builds and diplays the table to show the saved tours. Colours based on risk of the tour
+* @function showTableLastTours - Builds and diplays the table to show the saved tours. Colours based on risk of the tour
 * @var out - The content of the table
 */
 
-function showTable()
+function showTableLastTours()
 {
 	document.getElementById("lastToursContainer").style = "width: 100%";
 	document.getElementById("lastTours").style = "width: 100%";
 	var out = "";
  	for (var i = 0; i < tours.length; i++)
 	{
+		console.log(getTime(getUnix(tours[i].date)).formattedTime);
 		if(tours[i].risk=="true")
 		{
 			out += "<tr id = 'red'>\n" +
-				"\t\t\t<td id = \"date" + i + "\">" + tours[i].date + "</td>\n" +
+				"\t\t\t<td id = \"date" + i + "\">" + getTime(getUnix(tours[i].date)).formattedTime + "</td>\n" +
 				"\t\t\t<td id = \"departure" + i + "\">" + tours[i].place[0].name + "</td>\n" +
 				"\t\t\t<td id = \"destination" + i + "\">" + tours[i].destination + "</td>\n" +
 				"\t\t\t<td id = \"line" + i + "\">" + tours[i].line + "</td>\n" +
@@ -159,7 +160,7 @@ function showTable()
 		else
 		{
 			out += "<tr id = 'green'>\n" +
-				"\t\t\t<td id = \"date" + i + "\">" + tours[i].date + "</td>\n" +
+				"\t\t\t<td id = \"date" + i + "\">" + getTime(getUnix(tours[i].date)).formattedTime + "</td>\n" +
 				"\t\t\t<td id = \"departure" + i + "\">" + tours[i].place[0].name + "</td>\n" +
 				"\t\t\t<td id = \"destination" + i + "\">" + tours[i].destination + "</td>\n" +
 				"\t\t\t<td id = \"line" + i + "\">" + tours[i].line + "</td>\n" +
