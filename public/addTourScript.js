@@ -5,7 +5,7 @@
 
 "use strict";
 
-checkCookie("username");
+
 
 // Global variables
 var username = getCookie("username");
@@ -21,6 +21,7 @@ var radius = 50000;
 
 async function mainAddTour()
 {
+	checkCookie("username");
 	await getBusstops(position.geometry.coordinates);
 	await showMap();
 }
@@ -72,7 +73,7 @@ function showMap()
 		station = event.layer.id;
 		showTable(event.layer.name, event.layer.id);
 	}
-  
+
 	// Create Layers
 	var Empty = L.featureGroup();
 	var Layercontrol =
@@ -80,9 +81,9 @@ function showMap()
 		Nothing : Empty,
 		Busstops: LayerBusstops,
 	};
-	
+
     // Add control to map
-	L.control.layers(Layercontrole).addTo(map);
+	L.control.layers(Layercontrol).addTo(map);
 }
 
 
@@ -190,6 +191,9 @@ function showGeocoding()
 function startGeocoding()
 {
 	var geocodingkey = document.getElementById("geocodingkeyinput").value;
+	if(geocodingkey==""){
+		geocodingkey= geokey;
+	}
 	var adressString = document.getElementById("adress").value;
 	geocoding(geocodingkey,adressString);
 	showGo();
@@ -264,6 +268,9 @@ function getBusstops (location)
 {
 	//var key = "";  //insert your here transport api key here, if you do not want to insert it every time...
 	var key = document.getElementById("keyinput").value;
+	if(key==""){
+		key=herekey;
+	}
 	var resource = "https://transit.hereapi.com/v8/departures?in=" + location + ";r=" + radius + "&apiKey=" + key;
 	var x = new XMLHttpRequest();
 	x.open("GET", resource, false);
@@ -306,11 +313,11 @@ function showTable(id, storage)
 
 // An eventlistener for clicking on the table rows to check on the checkbox
 var table = document.getElementById("tableID");
-if(table != null) 
+if(table != null)
 {
-	for(var i = 0; i < table.rows.length; i++) 
+	for(var i = 0; i < table.rows.length; i++)
 	{
-        table.rows[i].onclick = function() 
+        table.rows[i].onclick = function()
 		{
             tableText(this);
         };
@@ -323,7 +330,7 @@ if(table != null)
 * @param row - The row for the onclick action
 */
 
-function tableText(row) 
+function tableText(row)
 {
 	if(document.getElementById("myCheck" + row.id).checked != true)
 	{
@@ -352,7 +359,7 @@ async function checkcheckboxes()
 			{
 				alert("Tour " + (i + 1) + " saved");
 			}
-			else 
+			else
 			{
 				alert("Tour " + (i + 1) + " could not be saved or was already saved");
 			}
@@ -397,10 +404,10 @@ function toGeoJSONPoint(coordinatesPoint)
 async function addTour(station, id, risk)
 {
 	// Create an object to save in the db
-    var input = 
+    var input =
 	{
-		"tourId": stationDepartures.boards[station].departures[id].transport.name + 
-					stationDepartures.boards[station].departures[id].transport.headsign + 
+		"tourId": stationDepartures.boards[station].departures[id].transport.name +
+					stationDepartures.boards[station].departures[id].transport.headsign +
 					stationDepartures.boards[station].departures[id].time + username,
 		"category": stationDepartures.boards[station].departures[id].transport.category,
 		"line": stationDepartures.boards[station].departures[id].transport.name,
@@ -450,7 +457,7 @@ async function addTour(station, id, risk)
 /**
 * @function checkTour - Checks if a tour is already saved in the db
 * @param id - The tourId of the overgiven tour
-* @var temp - The result of the get - request to the db 
+* @var temp - The result of the get - request to the db
 * @return true - If the tour already saved or an error occures
 * @return false - If the tour is not saved yet
 */
