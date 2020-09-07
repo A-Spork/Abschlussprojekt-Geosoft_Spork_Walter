@@ -61,7 +61,7 @@ async function main2()
 
 function showMapLastTour()
 {
-	if(tours.length==0)
+	if(tours.length == 0)
 	{
 		alert("No Tour to display");
 		return (-1);

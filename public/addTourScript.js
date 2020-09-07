@@ -6,7 +6,6 @@
 "use strict";
 
 
-
 // Global variables
 var username = getCookie("username");
 var station;
@@ -191,8 +190,9 @@ function showGeocoding()
 function startGeocoding()
 {
 	var geocodingkey = document.getElementById("geocodingkeyinput").value;
-	if(geocodingkey==""){
-		geocodingkey= geokey;
+	if(geocodingkey == "")
+	{
+		geocodingkey = geokey;
 	}
 	var adressString = document.getElementById("adress").value;
 	geocoding(geocodingkey,adressString);
@@ -268,8 +268,9 @@ function getBusstops (location)
 {
 	//var key = "";  //insert your here transport api key here, if you do not want to insert it every time...
 	var key = document.getElementById("keyinput").value;
-	if(key==""){
-		key=herekey;
+	if(key == "")
+	{
+		key = herekey;
 	}
 	var resource = "https://transit.hereapi.com/v8/departures?in=" + location + ";r=" + radius + "&apiKey=" + key;
 	var x = new XMLHttpRequest();
