@@ -32,6 +32,6 @@ async function showMessage()
 	}
 	else
 	{
-		document.getElementById("message").innerHTML = "No contacs to infected perosons since your last log in";
+		document.getElementById("message").innerHTML = "No contacs to infected persons since your last log in";
 	}
 }
