@@ -13,8 +13,14 @@ async function connectMongoDB()
 {
     try
 	{
-		// mongodb://localhost:27017
-        app.locals.dbConnection = await mongodb.MongoClient.connect("mongodb://mongodbservice:27017", {useNewUrlParser: true});
+		try
+		{
+			app.locals.dbConnection = await mongodb.MongoClient.connect("mongodb://localhost:27017", {useNewUrlParser: true});
+		}
+		catch(error)
+		{
+			app.locals.dbConnection = await mongodb.MongoClient.connect("mongodb://mongodbservice:27017", {useNewUrlParser: true});
+		}
         app.locals.db = await app.locals.dbConnection.db("itemdb");
         app.locals.db.createCollection("customer", function(err, res)
 		{
