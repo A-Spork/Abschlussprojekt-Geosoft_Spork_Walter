@@ -1,5 +1,7 @@
 # Abschlussprojekt-Geosoft_Spork_Walter
 A node/mongodb based version of a corona app
+
+Github: https://github.com/AdrianSpork/Abschlussprojekt-Geosoft_Spork_Walter
  
 To use the full potential of this app, the tokens for the following APIs are needed:
 - LocationIQ: forward Geocoding, https://locationiq.com/docs#search-forward-geocoding
@@ -26,7 +28,11 @@ For usage the following packages are needed:
 - leaflet
 - qunit
  
- Features not necassary:
- - Integration of Planes, Ships, Taxis (Have a look at Wangerooge)
- - Useraccounts are saved by passwords
- - Interactive maps and tables with layercontrol
+Features not necassary:
+- Integration of Planes, Ships, Taxis (Have a look at Wangerooge)
+- Useraccounts are saved by passwords
+- Interactive maps and tables with layercontrol
+
+Authors:
+- Adrian Spork
+- Jana Walter

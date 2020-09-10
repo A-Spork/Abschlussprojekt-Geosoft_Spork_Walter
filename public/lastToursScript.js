@@ -146,7 +146,6 @@ function showTableLastTours()
 	var out = "";
  	for (var i = 0; i < tours.length; i++)
 	{
-		console.log(getTime(getUnix(tours[i].date)).formattedTime);
 		if(tours[i].risk=="true")
 		{
 			out += "<tr id = 'red'>\n" +

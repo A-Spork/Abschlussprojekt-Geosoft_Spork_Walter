@@ -195,8 +195,13 @@ function startGeocoding()
 		geocodingkey = geokey;
 	}
 	var adressString = document.getElementById("adress").value;
-	geocoding(geocodingkey,adressString);
-	showGo();
+	try
+	{
+		geocoding(geocodingkey,adressString);
+		showGo();
+	}
+	catch(e)
+	{}
 }
 
 
