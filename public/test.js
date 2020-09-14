@@ -28,7 +28,7 @@ QUnit.test("function test in HTML: Geocoding - API", function(assert)
 	var invalidAdressString = "kwuoehtrf9w7z84rtp7nbw4ön9t7vaw978n34tb9nv8zwouthew4rot8zjg48tzg8ojzö458hz4z8üg34h8zü";
 	var invalidKey = "346";
 	var validAnswer = {"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[51.969283,7.595589]}};
-	var validKey = ""	////////////////////////////////////Insert your valid key for the LocationIQ here
+	var validKey = geokey;
 
 	assert.ok(geocoding(invalidKey, invalidAdressString).error == "Invalid key", "Invalid key, invalid adress");
 	assert.ok(geocoding(invalidKey,validAdressString).error == "Invalid key", "Invalid key, valid adress");
