@@ -126,12 +126,17 @@ async function showPosition(position1)
 
 function showGo()
 {
-	document.getElementById("footerGeofields").style = "";
-	document.getElementById("stationMap").style = "";
-	if(herekey == undefined)
+	try
+	{
+		herekey = herekey;
+		mainAddTour();
+	}
+	catch(e)
 	{
 		document.getElementById("keyinput").style = "";
 		document.getElementById("keyinputString").style = "";
+		document.getElementById("footerGeofields").style = "";
+		document.getElementById("stationMap").style = "";
 	}
 }
 
@@ -175,7 +180,11 @@ function hideGeocoding()
 function showGeocoding()
 {
 	hideCoordinates();
-	if(geokey == undefined)
+	try
+	{
+		geokey == geokey;
+	}
+	catch(e)
 	{
 		document.getElementById("keystring").style = "";
 		document.getElementById("geocodingkeyinput").style = "";
