@@ -128,8 +128,11 @@ function showGo()
 {
 	document.getElementById("footerGeofields").style = "";
 	document.getElementById("stationMap").style = "";
-	document.getElementById("keyinput").style = "";
-	document.getElementById("keyinputString").style = "";
+	if(herekey == undefined)
+	{
+		document.getElementById("keyinput").style = "";
+		document.getElementById("keyinputString").style = "";
+	}
 }
 
 
@@ -172,11 +175,14 @@ function hideGeocoding()
 function showGeocoding()
 {
 	hideCoordinates();
+	if(geokey == undefined)
+	{
+		document.getElementById("keystring").style = "";
+		document.getElementById("geocodingkeyinput").style = "";
+	}
 	document.getElementById("footerGeofields").style = "";
 	document.getElementById("adress").style = "";
-	document.getElementById("geocodingkeyinput").style = "";
 	document.getElementById("geocodingButton").style = "";
-	document.getElementById("keystring").style = "";
 	document.getElementById("adressString").style = "";
 }
 
@@ -197,7 +203,7 @@ function startGeocoding()
 	var adressString = document.getElementById("adress").value;
 	try
 	{
-		geocoding(geocodingkey,adressString);
+		geocoding(geocodingkey, adressString);
 		showGo();
 	}
 	catch(e)
