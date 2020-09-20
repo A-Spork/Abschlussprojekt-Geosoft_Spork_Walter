@@ -126,18 +126,16 @@ async function showPosition(position1)
 
 function showGo()
 {
-	try
-	{
-		herekey = herekey;
-		mainAddTour();
-	}
-	catch(e)
-	{
-		document.getElementById("keyinput").style = "";
-		document.getElementById("keyinputString").style = "";
-		document.getElementById("footerGeofields").style = "";
-		document.getElementById("stationMap").style = "";
-	}
+		if(herekey != ""){
+			mainAddTour();
+		}
+		else
+		{
+			document.getElementById("keyinput").style = "";
+			document.getElementById("keyinputString").style = "";
+			document.getElementById("footerGeofields").style = "";
+			document.getElementById("stationMap").style = "";
+		}
 }
 
 
@@ -180,14 +178,10 @@ function hideGeocoding()
 function showGeocoding()
 {
 	hideCoordinates();
-	try
-	{
-		geokey == geokey;
-	}
-	catch(e)
-	{
-		document.getElementById("keystring").style = "";
-		document.getElementById("geocodingkeyinput").style = "";
+			if(geokey == "")
+			{
+				document.getElementById("keystring").style = "";
+				document.getElementById("geocodingkeyinput").style = "";
 	}
 	document.getElementById("footerGeofields").style = "";
 	document.getElementById("adress").style = "";
@@ -372,10 +366,12 @@ function tableText(row)
 async function checkcheckboxes()
 {
 	var risk = Boolean(false);
+	var j = 0;
 	for(var i = 0; i < 5; i++)
 	{
 		if(document.getElementById("myCheck" + i).checked == true)
 		{
+			j++;
 			if(await addTour(station, i, risk) == true)
 			{
 				alert("Tour " + (i + 1) + " saved");
@@ -385,30 +381,13 @@ async function checkcheckboxes()
 				alert("Tour " + (i + 1) + " could not be saved or was already saved");
 			}
 		}
-    }
-}
-
-
-/**
-* @function toGeoJSONPoint - Converts the given point to GeoJSON
-* @param newGeopoint - The point as GeoJSON
-* @return newGeopoint - The point as GeoJSON point
-*/
-
-function toGeoJSONPoint(coordinatesPoint)
-{
-	var newGeopoint =
+  }
+	if(j==0)
 	{
-		"type": "Feature",
-		"properties": {},
-		"geometry":
-		{
-			"type": "Point",
-			"coordinates": coordinatesPoint
- 		}
-	};
-	return newGeopoint;
+		alert("No tour selected!");
+	}
 }
+
 
 
 /**

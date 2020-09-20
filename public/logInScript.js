@@ -26,6 +26,7 @@ async function logIn()
 	}
 	if(name == "doc" && password == "doc")
 	{
+		setCookie(name, password);
 		window.location = "http://localhost:3000/public/doc.html";
 	}
 	else if(name == "test" && password == "test")
