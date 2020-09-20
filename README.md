@@ -6,6 +6,7 @@ Github: https://github.com/AdrianSpork/Abschlussprojekt-Geosoft_Spork_Walter
 To use the full potential of this app, the tokens for the following APIs are needed:
 - LocationIQ: forward Geocoding, https://locationiq.com/docs#search-forward-geocoding
 - here: Development: Public Transit API (8.0.0), https://developer.here.com/documentation/public-transit/api-reference-swagger.html
+You can insert the keys in the file Apikeys.js in the public ordner or insert them, when the website asks you, at the website itself.
 For full functionality of the tests its necassary to insert the key for the Geocoding Api (/public/test.js - line 32)
  
 To start the app use npm start or docker composeup.
